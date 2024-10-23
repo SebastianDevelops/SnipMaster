@@ -1,0 +1,53 @@
+﻿<Page
+    x:Class="SnippetMasterWPF.Views.Pages.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SnippetMasterWPF.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syntax="clr-namespace:SnippetMaster.SyntaxBox;assembly=UI.SyntaxBox"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="DashboardPage"
+    d:DataContext="{d:DesignInstance local:DashboardPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+
+    <Grid VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ui:TextBox
+            AcceptsReturn="True"
+            AcceptsTab="True"
+            IsUndoEnabled="True"
+            Text="{Binding ViewModel.SnippetText}" />
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Margin="5"
+                Command="{Binding ViewModel.SnipImageCommand}"
+                Content="Snip" />
+            <Button
+                Margin="5"
+                Command="{Binding ViewModel.UploadFileCommand}"
+                Content="Upload" />
+            <Button Margin="5" Content="Copy" />
+            <Button Margin="5" Content="Insert@Cursor" />
+        </StackPanel>
+    </Grid>
+</Page>
