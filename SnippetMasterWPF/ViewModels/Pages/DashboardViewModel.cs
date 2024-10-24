@@ -12,13 +12,18 @@ namespace SnippetMasterWPF.ViewModels.Pages
     {
 		private readonly ITesseractService _tesseractService;
 		private readonly ISnippingService _snippingService;
+        private readonly IHotKeyService _hotKeyService;
 
-        public DashboardViewModel(ITesseractService tesseractService, ISnippingService snippingService)
+        public DashboardViewModel(ITesseractService tesseractService, 
+                                  ISnippingService snippingService,
+                                  IHotKeyService hotKeyService)
         {
 			_tesseractService = tesseractService ?? throw new NullReferenceException();
             _snippingService = snippingService ?? throw new NullReferenceException();
+            _hotKeyService = hotKeyService ?? throw new NullReferenceException();
 
             _snippingService.OnSnipCompleted += OnSnipCompleted;
+            _hotKeyService.RegisterHotkeys(StartSnipping);
         }
 
         private string _snippetText = String.Empty;
