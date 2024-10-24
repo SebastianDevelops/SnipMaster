@@ -1,4 +1,5 @@
-﻿using SnippetMasterWPF.ViewModels.Windows;
+﻿using SnippetMasterWPF.Helpers.Hotkeys;
+using SnippetMasterWPF.ViewModels.Windows;
 using Wpf.Ui;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
@@ -24,6 +25,7 @@ namespace SnippetMasterWPF.Views.Windows
             SetPageService(pageService);
 
             navigationService.SetNavigationControl(RootNavigation);
+            HotKeysManager.SetupSystemHook();
         }
 
         #region INavigationWindow methods
@@ -48,6 +50,7 @@ namespace SnippetMasterWPF.Views.Windows
             base.OnClosed(e);
 
             // Make sure that closing this window will begin the process of closing the application.
+            HotKeysManager.ShutdownSystemHook();
             Application.Current.Shutdown();
         }
 

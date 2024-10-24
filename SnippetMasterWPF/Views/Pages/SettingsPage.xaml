@@ -45,7 +45,31 @@
             Margin="0,24,0,0"
             FontSize="20"
             FontWeight="Medium"
-            Text="About SnippetMasterWPF" />
-        <TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+            Text="Hot Keys" />
+
+        <ui:DataGrid
+            HorizontalAlignment="Left"
+            AutoGenerateColumns="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding ViewModel.Hotkeys, Mode=OneWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Key}"
+                    Header="Action" />
+                <DataGridTextColumn
+                    Width="Auto"
+                    Binding="{Binding Value}"
+                    Header="Hotkey" />
+            </DataGrid.Columns>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Padding" Value="10,0,10,0" />
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+        </ui:DataGrid>
+
+
     </StackPanel>
 </Page>

@@ -1,4 +1,5 @@
-﻿using Wpf.Ui.Appearance;
+﻿using System.Collections.ObjectModel;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
 namespace SnippetMasterWPF.ViewModels.Pages
@@ -13,6 +14,18 @@ namespace SnippetMasterWPF.ViewModels.Pages
         [ObservableProperty]
         private ApplicationTheme _currentTheme = ApplicationTheme.Unknown;
 
+        private ObservableCollection<KeyValuePair<string, string>> _hotkeys = new();
+
+        public ObservableCollection<KeyValuePair<string, string>> Hotkeys
+        {
+            get => _hotkeys; 
+            set 
+            { 
+                _hotkeys = value; 
+            }
+        }
+
+
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
@@ -24,7 +37,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
         private void InitializeViewModel()
         {
             CurrentTheme = ApplicationThemeManager.GetAppTheme();
-            AppVersion = $"UiDesktopApp1 - {GetAssemblyVersion()}";
+            PopulateHotkeys();
 
             _isInitialized = true;
         }
@@ -33,6 +46,12 @@ namespace SnippetMasterWPF.ViewModels.Pages
         {
             return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString()
                 ?? String.Empty;
+        }
+
+        private void PopulateHotkeys()
+        {
+            var snipHotkey = new KeyValuePair<string, string>("Snip", "Alt + Q");
+            Hotkeys.Add(snipHotkey);
         }
 
         [RelayCommand]
