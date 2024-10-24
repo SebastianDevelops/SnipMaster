@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\SebastianvanRooyen\.nuget\packages\diffplex.wpf\1.4.0\contentFiles\any\net6.0-windows7.0\License.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wpfui-icon.ico" />
   </ItemGroup>
 

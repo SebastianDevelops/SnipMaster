@@ -28,8 +28,12 @@ namespace SnipMasterLib
                 if (snipForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     _captureRectangle = snipForm.SelectionRectangle;
-                    _snippedImage = ScreenCaptureHelper.CaptureScreen(_captureRectangle);
+                    _snippedImage = ScreenCaptureHelper.CaptureScreen(_captureRectangle)!;
 
+                    if(_snippedImage is null)
+                    {
+                        return;
+                    }
                     // Convert the captured Bitmap (System.Drawing.Image) to BitmapImage (WPF compatible)
                     var bitmapImage = ImageConversionHelper.ConvertToBitmapImage(_snippedImage);
 

@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnipmasterDemo", "SnipmasterDemo\SnipmasterDemo.csproj", "{87EEFDA9-1C9F-4211-B073-2511333088B7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnipMasterLib", "SnipMasterLib\SnipMasterLib.csproj", "{0775F74E-2455-4DF5-A71C-D43E0577BFE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetMasterWPF", "SnippetMasterWPF\SnippetMasterWPF.csproj", "{D8B7B046-6070-476E-AE9E-97F44E29A346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetMasterWPF", "SnippetMasterWPF\SnippetMasterWPF.csproj", "{D8B7B046-6070-476E-AE9E-97F44E29A346}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetMaster.SyntaxBox", "SnipMaster.SyntaxBox\SnippetMaster.SyntaxBox.csproj", "{092063A5-5BE7-42A8-B9CE-C8CAB526240D}"
 EndProject
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{87EEFDA9-1C9F-4211-B073-2511333088B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87EEFDA9-1C9F-4211-B073-2511333088B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87EEFDA9-1C9F-4211-B073-2511333088B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87EEFDA9-1C9F-4211-B073-2511333088B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0775F74E-2455-4DF5-A71C-D43E0577BFE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0775F74E-2455-4DF5-A71C-D43E0577BFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0775F74E-2455-4DF5-A71C-D43E0577BFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU

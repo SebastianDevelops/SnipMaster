@@ -18,14 +18,22 @@ namespace SnipMasterLib.Helpers
         /// </summary>
         /// <param name="rect">The rectangle representing the area to capture.</param>
         /// <returns>A Bitmap object containing the captured screen section.</returns>
-        public static Bitmap CaptureScreen(Rectangle rect)
+        public static Bitmap? CaptureScreen(Rectangle rect)
         {
-            Bitmap screenshot = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
-            using (Graphics g = Graphics.FromImage(screenshot))
+            try
             {
-                g.CopyFromScreen(rect.Left, rect.Top, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
+                Bitmap screenshot = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
+                using (Graphics g = Graphics.FromImage(screenshot))
+                {
+                    g.CopyFromScreen(rect.Left, rect.Top, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
+                }
+                return screenshot;
             }
-            return screenshot;
+            catch (System.ArgumentException ex)
+            {
+                return null;
+            }
+           
         }
     }
 }
