@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetMasterWPF", "Snippet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetMaster.SyntaxBox", "SnipMaster.SyntaxBox\SnippetMaster.SyntaxBox.csproj", "{092063A5-5BE7-42A8-B9CE-C8CAB526240D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetMaster.BrowserConnect", "SnippetMaster.BrowserConnect\SnippetMaster.BrowserConnect.csproj", "{E1CDCD93-3E8C-4810-9544-0ED5FFC9C7CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{092063A5-5BE7-42A8-B9CE-C8CAB526240D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{092063A5-5BE7-42A8-B9CE-C8CAB526240D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{092063A5-5BE7-42A8-B9CE-C8CAB526240D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1CDCD93-3E8C-4810-9544-0ED5FFC9C7CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CDCD93-3E8C-4810-9544-0ED5FFC9C7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1CDCD93-3E8C-4810-9544-0ED5FFC9C7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CDCD93-3E8C-4810-9544-0ED5FFC9C7CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
