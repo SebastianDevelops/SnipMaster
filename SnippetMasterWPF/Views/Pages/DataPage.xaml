@@ -16,20 +16,57 @@
     ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-    Loaded="DataPage_Loaded"
     ScrollViewer.CanContentScroll="False"
     mc:Ignorable="d">
-
     <StackPanel>
+        <ui:InfoBar
+            Title="Tip"
+            Margin="0,0,0,5"
+            IsOpen="True"
+            Message="Click diff viewer headings for more options."
+            Severity="Informational" />
+
         <ui:InfoBar
             Title="Tip"
             Margin="0,0,0,15"
             IsOpen="True"
-            Message="Click diff viewer headings for more options"
+            Message="The insert icons below enter the snippet text into either the left or right panel."
             Severity="Informational" />
+
+        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+            <ui:Button
+                Command="{Binding ViewModel.UploadDiffFileCommand}"
+                Content="Upload Text File"
+                Icon="{Binding ViewModel.UploadBtnIcon}" />
+
+            <ui:Button
+                Margin="5,0,0,0"
+                Command="{Binding ViewModel.InsertTextOriginalCommand}"
+                Icon="{Binding ViewModel.InsertTextOriIcon}"
+                ToolTipService.InitialShowDelay="100"
+                ToolTipService.Placement="MousePoint"
+                ToolTipService.ToolTip="Insert snipped text into original panel" />
+
+            <ui:Button
+                Margin="5,0,0,0"
+                Command="{Binding ViewModel.InsertTextLatestCommand}"
+                Icon="{Binding ViewModel.InsertTextLatIcon}"
+                ToolTip="Insert snipped text into latest panel" />
+
+            <ui:Button
+                Margin="5,0,0,0"
+                Command="{Binding ViewModel.ClearPanelsCommand}"
+                Icon="{Binding ViewModel.ClearTextIcon}"
+                ToolTipService.InitialShowDelay="100"
+                ToolTipService.Placement="MousePoint"
+                ToolTipService.ToolTip="Clear panels" />
+        </StackPanel>
+
+
 
         <diffplex:DiffViewer
             x:Name="CheckDiffView"
+            Height="365"
             IgnoreUnchanged="False"
             LinesContext="2"
             NewText="{Binding ViewModel.Latest, UpdateSourceTrigger=PropertyChanged}"

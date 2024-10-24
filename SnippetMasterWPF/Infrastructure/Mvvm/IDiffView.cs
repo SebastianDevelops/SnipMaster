@@ -8,6 +8,7 @@ namespace SnippetMasterWPF.Infrastructure.Mvvm
 {
     public interface IDiffView
     {
-
+        void ShowOpenFileContextMenu();
+        void ClearPanels();
     }
 }
