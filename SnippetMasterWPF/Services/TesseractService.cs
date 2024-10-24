@@ -1,10 +1,4 @@
-﻿using IronOcr;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows.Media.Imaging;
 using Tesseract;
 
@@ -14,7 +8,7 @@ namespace SnippetMasterWPF.Services
     {
         public string ReadFromUploadedFile(string filePath)
         {
-            using (var ocrEngine = new TesseractEngine(@".\tessdata", "eng", EngineMode.TesseractAndLstm))
+            using (var ocrEngine = new TesseractEngine(@".\tessdata", "eng", EngineMode.Default))
             {
                 var file = Pix.LoadFromFile(filePath);
                 
@@ -39,7 +33,7 @@ namespace SnippetMasterWPF.Services
                 encoder.Save(memoryStream);
                 memoryStream.Position = 0;
 
-                using (var ocrEngine = new TesseractEngine(@".\tessdata", "eng", EngineMode.TesseractAndLstm))
+                using (var ocrEngine = new TesseractEngine(@".\tessdata", "eng", EngineMode.Default))
                 {
                     var pix = Pix.LoadFromMemory(memoryStream.ToArray());
                     var result = ocrEngine.Process(pix);

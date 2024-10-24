@@ -1,9 +1,10 @@
 ﻿using SnippetMasterWPF.Services;
-using System.Drawing;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
+using RelayCommand = SnippetMasterWPF.Infrastructure.Mvvm.RelayCommand;
+using System.Windows.Input;
 
 namespace SnippetMasterWPF.ViewModels.Pages
 {
@@ -29,7 +30,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 			{ 
 				_snippetText = value;
 				OnPropertyChanged();
-			}
+            }
 		}
 
 		private BitmapImage _snippedImage = new();
@@ -48,7 +49,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 		//commands
 		public ICommand UploadFileCommand => new RelayCommand(UploadFile);
 		public ICommand SnipImageCommand => new RelayCommand(StartSnipping);
-
+        public ICommand CopySnippetCommand => new RelayCommand(CopySnippet, CanCopySnippet);
 
 		//methods
 		public void UploadFile()
@@ -79,6 +80,23 @@ namespace SnippetMasterWPF.ViewModels.Pages
 		private void StartSnipping()
         {
             _snippingService.StartSnipping();
+        }
+
+		private void CopySnippet()
+		{
+            try
+            {
+                Clipboard.SetDataObject(SnippetText);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unable to access the clipboard: " + ex.Message);
+            }
+        }
+
+        private bool CanCopySnippet()
+        {
+            return !string.IsNullOrEmpty(SnippetText);
         }
 
 		private void OnSnipCompleted(BitmapImage snippedImage)

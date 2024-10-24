@@ -30,7 +30,7 @@
             AcceptsReturn="True"
             AcceptsTab="True"
             IsUndoEnabled="True"
-            Text="{Binding ViewModel.SnippetText}" />
+            Text="{Binding ViewModel.SnippetText, UpdateSourceTrigger=PropertyChanged}" />
 
         <StackPanel
             Grid.Row="1"
@@ -46,8 +46,10 @@
                 Margin="5"
                 Command="{Binding ViewModel.UploadFileCommand}"
                 Content="Upload" />
-            <Button Margin="5" Content="Copy" />
-            <Button Margin="5" Content="Insert@Cursor" />
+            <Button
+                Margin="5"
+                Command="{Binding ViewModel.CopySnippetCommand}"
+                Content="Copy" />
         </StackPanel>
     </Grid>
 </Page>
