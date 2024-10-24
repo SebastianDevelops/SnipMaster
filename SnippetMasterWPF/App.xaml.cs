@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SnippetMasterWPF.Infrastructure.Mvvm;
 using SnippetMasterWPF.Services;
 using SnippetMasterWPF.ViewModels.Pages;
 using SnippetMasterWPF.ViewModels.Windows;
@@ -53,6 +54,7 @@ namespace SnippetMasterWPF
                 services.AddSingleton<DashboardViewModel>();
                 services.AddSingleton<DataPage>();
                 services.AddSingleton<DataViewModel>();
+                services.AddTransient<IDiffView, DataPage>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
             }).Build();

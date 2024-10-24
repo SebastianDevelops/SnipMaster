@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:diffplex="clr-namespace:DiffPlex.Wpf.Controls;assembly=DiffPlex.Wpf"
     xmlns:local="clr-namespace:SnippetMasterWPF.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:SnippetMasterWPF.Models"
@@ -17,27 +18,61 @@
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     ScrollViewer.CanContentScroll="False"
     mc:Ignorable="d">
+    <StackPanel>
+        <ui:InfoBar
+            Title="Tip"
+            Margin="0,0,0,5"
+            IsOpen="True"
+            Message="Click diff viewer headings for more options."
+            Severity="Informational" />
 
-    <Grid>
-        <ui:VirtualizingItemsControl
-            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-            ItemsSource="{Binding ViewModel.Colors, Mode=OneWay}"
-            VirtualizingPanel.CacheLengthUnit="Item">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:DataColor}">
-                    <ui:Button
-                        Width="80"
-                        Height="80"
-                        Margin="2"
-                        Padding="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Appearance="Secondary"
-                        Background="{Binding Color, Mode=OneWay}"
-                        FontSize="25"
-                        Icon="Fluent24" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ui:VirtualizingItemsControl>
-    </Grid>
+        <ui:InfoBar
+            Title="Tip"
+            Margin="0,0,0,15"
+            IsOpen="True"
+            Message="The insert icons below enter the snippet text into either the left or right panel."
+            Severity="Informational" />
+
+        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+            <ui:Button
+                Command="{Binding ViewModel.UploadDiffFileCommand}"
+                Content="Upload Text File"
+                Icon="{Binding ViewModel.UploadBtnIcon}" />
+
+            <ui:Button
+                Margin="5,0,0,0"
+                Command="{Binding ViewModel.InsertTextOriginalCommand}"
+                Icon="{Binding ViewModel.InsertTextOriIcon}"
+                ToolTipService.InitialShowDelay="100"
+                ToolTipService.Placement="MousePoint"
+                ToolTipService.ToolTip="Insert snipped text into original panel" />
+
+            <ui:Button
+                Margin="5,0,0,0"
+                Command="{Binding ViewModel.InsertTextLatestCommand}"
+                Icon="{Binding ViewModel.InsertTextLatIcon}"
+                ToolTip="Insert snipped text into latest panel" />
+
+            <ui:Button
+                Margin="5,0,0,0"
+                Command="{Binding ViewModel.ClearPanelsCommand}"
+                Icon="{Binding ViewModel.ClearTextIcon}"
+                ToolTipService.InitialShowDelay="100"
+                ToolTipService.Placement="MousePoint"
+                ToolTipService.ToolTip="Clear panels" />
+        </StackPanel>
+
+
+
+        <diffplex:DiffViewer
+            x:Name="CheckDiffView"
+            Height="365"
+            IgnoreUnchanged="False"
+            LinesContext="2"
+            NewText="{Binding ViewModel.Latest, UpdateSourceTrigger=PropertyChanged}"
+            NewTextHeader="Latest"
+            OldText="{Binding ViewModel.Original, UpdateSourceTrigger=PropertyChanged}"
+            OldTextHeader="Original"
+            ScrollViewer.VerticalScrollBarVisibility="Auto" />
+    </StackPanel>
 </Page>
