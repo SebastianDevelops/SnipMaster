@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:diffplex="clr-namespace:DiffPlex.Wpf.Controls;assembly=DiffPlex.Wpf"
     xmlns:local="clr-namespace:SnippetMasterWPF.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:SnippetMasterWPF.Models"
@@ -15,29 +16,26 @@
     ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Loaded="DataPage_Loaded"
     ScrollViewer.CanContentScroll="False"
     mc:Ignorable="d">
 
-    <Grid>
-        <ui:VirtualizingItemsControl
-            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-            ItemsSource="{Binding ViewModel.Colors, Mode=OneWay}"
-            VirtualizingPanel.CacheLengthUnit="Item">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:DataColor}">
-                    <ui:Button
-                        Width="80"
-                        Height="80"
-                        Margin="2"
-                        Padding="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Appearance="Secondary"
-                        Background="{Binding Color, Mode=OneWay}"
-                        FontSize="25"
-                        Icon="Fluent24" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ui:VirtualizingItemsControl>
-    </Grid>
+    <StackPanel>
+        <ui:InfoBar
+            Title="Tip"
+            Margin="0,0,0,15"
+            IsOpen="True"
+            Message="Click diff viewer headings for more options"
+            Severity="Informational" />
+
+        <diffplex:DiffViewer
+            x:Name="CheckDiffView"
+            IgnoreUnchanged="False"
+            LinesContext="2"
+            NewText="{Binding ViewModel.Latest, UpdateSourceTrigger=PropertyChanged}"
+            NewTextHeader="Latest"
+            OldText="{Binding ViewModel.Original, UpdateSourceTrigger=PropertyChanged}"
+            OldTextHeader="Original"
+            ScrollViewer.VerticalScrollBarVisibility="Auto" />
+    </StackPanel>
 </Page>
