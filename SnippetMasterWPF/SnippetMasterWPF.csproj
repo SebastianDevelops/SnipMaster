@@ -51,6 +51,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SnipMaster.SyntaxBox\SnippetMaster.SyntaxBox.csproj" />
     <ProjectReference Include="..\SnipMasterLib\SnipMasterLib.csproj" />
+    <ProjectReference Include="..\SnippetMaster.BrowserConnect\SnippetMaster.BrowserConnect.csproj" />
   </ItemGroup>
 
 </Project>
