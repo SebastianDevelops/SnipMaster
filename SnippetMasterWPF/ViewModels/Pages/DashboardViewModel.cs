@@ -5,6 +5,9 @@ using Clipboard = System.Windows.Forms.Clipboard;
 using MessageBox = System.Windows.MessageBox;
 using RelayCommand = SnippetMasterWPF.Infrastructure.Mvvm.RelayCommand;
 using System.Windows.Input;
+using Wpf.Ui.Controls;
+using Wpf.Ui;
+using Wpf.Ui.Extensions;
 
 namespace SnippetMasterWPF.ViewModels.Pages
 {
@@ -13,14 +16,20 @@ namespace SnippetMasterWPF.ViewModels.Pages
 		private readonly ITesseractService _tesseractService;
 		private readonly ISnippingService _snippingService;
         private readonly IHotKeyService _hotKeyService;
+        private readonly IDeviceLinkService _deviceLinkService;
+        private readonly IContentDialogService _contentDialogService;
 
         public DashboardViewModel(ITesseractService tesseractService, 
                                   ISnippingService snippingService,
-                                  IHotKeyService hotKeyService)
+                                  IHotKeyService hotKeyService,
+                                  IDeviceLinkService deviceLinkService,
+                                  IContentDialogService contentDialogService)
         {
 			_tesseractService = tesseractService ?? throw new NullReferenceException();
             _snippingService = snippingService ?? throw new NullReferenceException();
             _hotKeyService = hotKeyService ?? throw new NullReferenceException();
+            _deviceLinkService = deviceLinkService ?? throw new NullReferenceException();
+            _contentDialogService = contentDialogService ?? throw new NullReferenceException();
 
             _snippingService.OnSnipCompleted += OnSnipCompleted;
             _hotKeyService.RegisterHotkeys(StartSnipping);
@@ -55,9 +64,10 @@ namespace SnippetMasterWPF.ViewModels.Pages
 		public ICommand UploadFileCommand => new RelayCommand(UploadFile);
 		public ICommand SnipImageCommand => new RelayCommand(StartSnipping);
         public ICommand CopySnippetCommand => new RelayCommand(CopySnippet, CanCopySnippet);
+        public ICommand SendToDeviceCommand => new RelayCommand(async () => await SendToDevice(), CanSendToDevice);
 
-		//methods
-		public void UploadFile()
+        //methods
+        public void UploadFile()
 		{
 			try
 			{
@@ -100,6 +110,30 @@ namespace SnippetMasterWPF.ViewModels.Pages
         }
 
         private bool CanCopySnippet()
+        {
+            return !string.IsNullOrEmpty(SnippetText);
+        }
+
+        private async Task SendToDevice()
+        {
+            var qrCode = await _deviceLinkService.GenerateDeviceLink(SnippetText);
+
+            if(qrCode.Value == null)
+            {
+                return;
+            }
+
+            ContentDialogResult result = await _contentDialogService.ShowSimpleDialogAsync(
+            new SimpleContentDialogCreateOptions()
+            {
+                Title = "Scan Qr code to download text on device",
+                Content = qrCode.Value,
+                CloseButtonText = "Close",
+            }
+        );
+        }
+
+        private bool CanSendToDevice()
         {
             return !string.IsNullOrEmpty(SnippetText);
         }

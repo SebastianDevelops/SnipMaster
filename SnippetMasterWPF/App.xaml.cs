@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SnippetMaster.BrowserConnect;
 using SnippetMasterWPF.Infrastructure.Mvvm;
 using SnippetMasterWPF.Services;
 using SnippetMasterWPF.ViewModels.Pages;
@@ -9,6 +10,7 @@ using SnippetMasterWPF.Views.Pages;
 using SnippetMasterWPF.Views.Windows;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Windows.Threading;
 using Wpf.Ui;
 
@@ -40,11 +42,14 @@ namespace SnippetMasterWPF
                 // TaskBar manipulation
                 services.AddSingleton<ITaskBarService, TaskBarService>();
 
+                services.AddSingleton<IContentDialogService, ContentDialogService>();
+
                 // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
                 services.AddSingleton<IHotKeyService, HotKeyService>();
                 services.AddTransient<ITesseractService, TesseractService>();
                 services.AddTransient<ISnippingService, SnippingService>();
+                services.AddTransient<IDeviceLinkService, DeviceLinkService>();
 
                 // Main window with navigation
                 services.AddSingleton<INavigationWindow, MainWindow>();

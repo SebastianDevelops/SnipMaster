@@ -50,6 +50,10 @@
                 Margin="5"
                 Command="{Binding ViewModel.CopySnippetCommand}"
                 Content="Copy" />
+            <Button
+                Margin="5"
+                Command="{Binding ViewModel.SendToDeviceCommand}"
+                Content="Download txt" />
         </StackPanel>
     </Grid>
 </Page>
