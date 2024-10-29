@@ -72,7 +72,7 @@ namespace WinFormsApp1
             base.OnPaint(e);
             if (isDragging)
             {
-                using (Pen pen = new Pen(Color.Red, 2))
+                using (Pen pen = new Pen(Color.Red, 5))
                 {
                     e.Graphics.DrawRectangle(pen, GetSelectionRectangle());
                 }
