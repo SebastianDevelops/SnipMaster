@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>wpfui-icon.ico</ApplicationIcon>
+    <ApplicationIcon>snippet-master-icon.ico</ApplicationIcon>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wpfui-icon.ico" />
+    <Content Include="snippet-master-icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,7 @@
     <None Remove="Assets\wpfui-icon-1024.png" />
     <None Remove="Services\tessdata\eng.traineddata" />
     <None Remove="Services\tessdata\pdf.ttf" />
+    <None Remove="snippet-master-icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

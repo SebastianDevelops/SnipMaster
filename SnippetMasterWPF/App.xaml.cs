@@ -21,6 +21,7 @@ namespace SnippetMasterWPF
     /// </summary>
     public partial class App
     {
+
         // The.NET Generic Host provides dependency injection, configuration, logging, and other services.
         // https://docs.microsoft.com/dotnet/core/extensions/generic-host
         // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection

@@ -92,7 +92,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 			
 		}
 
-		private void StartSnipping()
+		public void StartSnipping()
         {
             _snippingService.StartSnipping();
         }
@@ -151,7 +151,16 @@ namespace SnippetMasterWPF.ViewModels.Pages
                 string snippetText = _tesseractService.ReadFromSnippedImage(snippedImage);
 
                 if (!string.IsNullOrEmpty(snippetText))
+                {
                     SnippetText = snippetText;
+                    try
+                    {
+                        Clipboard.SetDataObject(SnippetText);
+                    }
+                    catch
+                    {
+                    }
+                }
             }
 			catch (Exception ex)
 			{
