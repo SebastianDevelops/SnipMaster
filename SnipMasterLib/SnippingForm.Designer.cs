@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+            instructionFont?.Dispose();
             base.Dispose(disposing);
         }
 
