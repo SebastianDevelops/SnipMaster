@@ -38,6 +38,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Services\tessdata\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+  </ItemGroup>
+
+  
+  <ItemGroup>
     <Resource Include="Assets\wpfui-icon-256.png" />
     <Resource Include="Assets\wpfui-icon-1024.png" />
     <Resource Include="Services\tessdata\eng.traineddata">
@@ -53,7 +61,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SnipMaster.SyntaxBox\SnippetMaster.SyntaxBox.csproj" />
     <ProjectReference Include="..\SnipMasterLib\SnipMasterLib.csproj" />
     <ProjectReference Include="..\SnippetMaster.BrowserConnect\SnippetMaster.BrowserConnect.csproj" />
   </ItemGroup>

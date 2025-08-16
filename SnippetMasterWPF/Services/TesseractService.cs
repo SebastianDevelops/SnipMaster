@@ -8,7 +8,7 @@ namespace SnippetMasterWPF.Services
     {
         public string ReadFromUploadedFile(string filePath)
         {
-            using (var ocrEngine = new TesseractEngine(@".\tessdata", "eng", EngineMode.Default))
+            using (var ocrEngine = new TesseractEngine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata"), "eng", EngineMode.Default))
             {
                 var file = Pix.LoadFromFile(filePath);
                 

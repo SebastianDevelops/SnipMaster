@@ -40,7 +40,7 @@ namespace SnippetMasterWPF.Views.Windows
             _trayIcon.Visible = true;
 
             _trayIcon.ContextMenuStrip = new ContextMenuStrip();
-            _trayIcon.ContextMenuStrip.Items.Add("Snip", null, (sender, args) => dashboardViewModel.StartSnipping());
+            _trayIcon.ContextMenuStrip.Items.Add("Snip (Alt+Q)", null, (sender, args) => dashboardViewModel.StartSnipping());
             _trayIcon.ContextMenuStrip.Items.Add("Open", null, (sender, args) =>
             {
                 this.Show();
