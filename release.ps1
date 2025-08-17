@@ -3,7 +3,7 @@ param (
     [switch]$OnlyBuild=$false
 )
 
-$appName = "SnippetMaster"
+$appName = "SnippetMasterWPF"
 $projDir = "SnippetMasterWPF"
 
 Set-StrictMode -version 2.0
