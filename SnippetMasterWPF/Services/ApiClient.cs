@@ -7,7 +7,7 @@ namespace SnippetMasterWPF.Services;
 public class ApiClient : IApiClient
 {
     private readonly HttpClient _httpClient;
-    private readonly string _baseUrl = "https://localhost:7001"; // Update with your API URL
+    private readonly string _baseUrl = "https://snipmaster.onrender.com";
 
     public ApiClient(HttpClient httpClient)
     {
