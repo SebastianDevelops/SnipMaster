@@ -49,12 +49,6 @@
       <Link>tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Assets\Monaco\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Assets\wpfui-icon-256.png" />
