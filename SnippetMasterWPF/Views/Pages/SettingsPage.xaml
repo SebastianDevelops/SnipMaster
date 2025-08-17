@@ -47,28 +47,57 @@
             FontWeight="Medium"
             Text="Hot Keys" />
 
-        <ui:DataGrid
-            HorizontalAlignment="Left"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding ViewModel.Hotkeys, Mode=OneWay}">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="Auto"
-                    Binding="{Binding Key}"
-                    Header="Action" />
-                <DataGridTextColumn
-                    Width="Auto"
-                    Binding="{Binding Value}"
-                    Header="Hotkey" />
-            </DataGrid.Columns>
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Padding" Value="10,0,10,0" />
-                    <Setter Property="Foreground" Value="Black" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-        </ui:DataGrid>
+        <ui:Card Margin="0,12,0,0" MaxWidth="400">
+            <StackPanel>
+                <TextBlock
+                    Margin="0,0,0,12"
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="Keyboard Shortcuts"
+                    Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                
+                <ItemsControl ItemsSource="{Binding ViewModel.Hotkeys, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="0,0,0,8"
+                                Padding="12,8"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Key}"
+                                        FontWeight="Medium"
+                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                                    
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="8,4"
+                                        Background="{DynamicResource AccentFillColorDefaultBrush}"
+                                        CornerRadius="4">
+                                        <TextBlock
+                                            Text="{Binding Value}"
+                                            FontFamily="Consolas"
+                                            FontSize="12"
+                                            FontWeight="SemiBold"
+                                            Foreground="White" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ui:Card>
 
 
     </StackPanel>

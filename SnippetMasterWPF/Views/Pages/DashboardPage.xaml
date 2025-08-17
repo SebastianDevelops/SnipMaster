@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:ww2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+    xmlns:converters="clr-namespace:SnippetMasterWPF.Infrastructure.Converters"
     Title="DashboardPage"
     d:DataContext="{d:DesignInstance local:DashboardPage,
                                      IsDesignTimeCreatable=False}"
@@ -16,6 +17,11 @@
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
+    
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:InverseBooleanConverter x:Key="BoolToInverseBoolConverter" />
+    </Page.Resources>
 
     <Grid VerticalAlignment="Top">
         <Grid.RowDefinitions>
@@ -45,10 +51,36 @@
             BorderThickness="1"
             CornerRadius="4"
             MinHeight="150">
-            <ww2:WebView2
-                x:Name="WebView"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" />
+            <Grid>
+                <ww2:WebView2
+                    x:Name="WebView"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsEnabled="{Binding ViewModel.IsProcessing, Converter={StaticResource BoolToInverseBoolConverter}}" />
+                
+                <!-- Loading Overlay -->
+                <Border
+                    Background="{DynamicResource ApplicationBackgroundBrush}"
+                    Opacity="0.9"
+                    CornerRadius="4"
+                    Visibility="{Binding ViewModel.IsProcessing, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                        <ui:ProgressRing
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,0,10"
+                            IsIndeterminate="True" />
+                        <TextBlock
+                            Text="Formatting text..."
+                            FontSize="14"
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Border>
 
         <!-- <ui:TextBox -->

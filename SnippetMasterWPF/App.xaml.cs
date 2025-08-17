@@ -50,6 +50,8 @@ namespace SnippetMasterWPF
                 services.AddSingleton<IHotKeyService, HotKeyService>();
                 services.AddTransient<ITesseractService, TesseractService>();
                 services.AddTransient<ISnippingService, SnippingService>();
+                services.AddHttpClient();
+                services.AddTransient<IApiClient, ApiClient>();
 
                 // Main window with navigation
                 services.AddSingleton<INavigationWindow, MainWindow>();

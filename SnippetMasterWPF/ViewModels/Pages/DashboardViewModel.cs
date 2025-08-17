@@ -21,6 +21,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 		private readonly ISnippingService _snippingService;
         private readonly IHotKeyService _hotKeyService;
         private readonly IContentDialogService _contentDialogService;
+        private readonly IApiClient _apiClient;
         private EditorController? _editorController;
 
         public class LanguageItem
@@ -45,15 +46,28 @@ namespace SnippetMasterWPF.ViewModels.Pages
             }
         }
 
+        private bool _isProcessing;
+        public bool IsProcessing
+        {
+            get => _isProcessing;
+            set
+            {
+                _isProcessing = value;
+                OnPropertyChanged();
+            }
+        }
+
         public DashboardViewModel(ITesseractService tesseractService, 
                                   ISnippingService snippingService,
                                   IHotKeyService hotKeyService,
-                                  IContentDialogService contentDialogService)
+                                  IContentDialogService contentDialogService,
+                                  IApiClient apiClient)
         {
 			_tesseractService = tesseractService ?? throw new NullReferenceException();
             _snippingService = snippingService ?? throw new NullReferenceException();
             _hotKeyService = hotKeyService ?? throw new NullReferenceException();
             _contentDialogService = contentDialogService ?? throw new NullReferenceException();
+            _apiClient = apiClient ?? throw new NullReferenceException();
 
             _snippingService.OnSnipCompleted += OnSnipCompleted;
             _hotKeyService.RegisterHotkeys(StartSnipping);
@@ -171,14 +185,18 @@ namespace SnippetMasterWPF.ViewModels.Pages
                 if (!string.IsNullOrEmpty(snippetText))
                 {
                     SnippetText = snippetText;
-                    _ = _editorController?.SetContentAsync(snippetText);
+                    
+                    // Copy original text to clipboard immediately
                     try
                     {
-                        Clipboard.SetDataObject(SnippetText);
+                        Clipboard.SetDataObject(snippetText);
                     }
                     catch
                     {
                     }
+                    
+                    // Process text via API and update editor
+                    _ = ProcessAndUpdateEditorAsync(snippetText);
                 }
             }
 			catch (Exception ex)
@@ -208,6 +226,26 @@ namespace SnippetMasterWPF.ViewModels.Pages
         )
         {
 	        _ = DispatchAsync(InitializeEditorAsync);
+        }
+        
+        private async Task ProcessAndUpdateEditorAsync(string originalText)
+        {
+            IsProcessing = true;
+            
+            try
+            {
+                var processedText = await _apiClient.ProcessSnippetAsync(originalText);
+                await _editorController?.SetContentAsync(processedText);
+            }
+            catch
+            {
+                // Fallback to original text if API fails
+                await _editorController?.SetContentAsync(originalText);
+            }
+            finally
+            {
+                IsProcessing = false;
+            }
         }
         
         private static DispatcherOperation<TResult> DispatchAsync<TResult>(Func<TResult> callback)
