@@ -13,6 +13,8 @@ namespace SnippetMasterWPF.Views.Pages
             DataContext = this;
 
             InitializeComponent();
+            
+            ViewModel.SetWebView(WebView);
         }
     }
 }

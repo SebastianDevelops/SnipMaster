@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <Content Remove="C:\Users\SebastianvanRooyen\.nuget\packages\diffplex.wpf\1.4.0\contentFiles\any\net6.0-windows7.0\License.txt" />
+    <Content Update="Assets\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +26,8 @@
   <ItemGroup>
     <PackageReference Include="DiffPlex.Wpf" Version="1.4.0" />
     <PackageReference Include="Iso639" Version="1.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
     <PackageReference Include="WPF-UI" Version="3.0.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0 " />
@@ -44,6 +49,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Assets\Monaco\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Assets\wpfui-icon-256.png" />
