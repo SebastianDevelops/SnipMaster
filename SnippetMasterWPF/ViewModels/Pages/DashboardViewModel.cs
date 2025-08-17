@@ -22,6 +22,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
         private readonly IHotKeyService _hotKeyService;
         private readonly IContentDialogService _contentDialogService;
         private readonly IApiClient _apiClient;
+        private readonly INotificationService _notificationService;
         private EditorController? _editorController;
 
         public class LanguageItem
@@ -57,17 +58,21 @@ namespace SnippetMasterWPF.ViewModels.Pages
             }
         }
 
+
+
         public DashboardViewModel(ITesseractService tesseractService, 
                                   ISnippingService snippingService,
                                   IHotKeyService hotKeyService,
                                   IContentDialogService contentDialogService,
-                                  IApiClient apiClient)
+                                  IApiClient apiClient,
+                                  INotificationService notificationService)
         {
 			_tesseractService = tesseractService ?? throw new NullReferenceException();
             _snippingService = snippingService ?? throw new NullReferenceException();
             _hotKeyService = hotKeyService ?? throw new NullReferenceException();
             _contentDialogService = contentDialogService ?? throw new NullReferenceException();
             _apiClient = apiClient ?? throw new NullReferenceException();
+            _notificationService = notificationService ?? throw new NullReferenceException();
 
             _snippingService.OnSnipCompleted += OnSnipCompleted;
             _hotKeyService.RegisterHotkeys(StartSnipping);
@@ -190,6 +195,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
                     try
                     {
                         Clipboard.SetDataObject(snippetText);
+                        _notificationService.ShowNotification("SnipMaster", "Text copied to clipboard successfully!");
                     }
                     catch
                     {
@@ -248,6 +254,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
             }
         }
         
+
         private static DispatcherOperation<TResult> DispatchAsync<TResult>(Func<TResult> callback)
         {
 	        return System.Windows.Application.Current.Dispatcher.InvokeAsync(callback);

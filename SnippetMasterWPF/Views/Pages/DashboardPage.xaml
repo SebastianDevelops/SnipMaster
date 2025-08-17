@@ -98,7 +98,7 @@
             <Button
                 Margin="5"
                 Command="{Binding ViewModel.SnipImageCommand}"
-                Content="Snip" />
+                Content="Snip (Alt+Q)" />
             <Button
                 Margin="5"
                 Command="{Binding ViewModel.UploadFileCommand}"
