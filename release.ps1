@@ -3,8 +3,8 @@ param (
     [switch]$OnlyBuild=$false
 )
 
-$appName = "SnippetMaster" # 👈 Replace with your application project name.
-$projDir = "SnippetMasterWPF" # 👈 Replace with your project directory (where .csproj resides).
+$appName = "SnippetMaster"
+$projDir = "SnippetMasterWPF"
 
 Set-StrictMode -version 2.0
 $ErrorActionPreference = "Stop"
@@ -47,11 +47,6 @@ try {
         /p:ApplicationVersion=$version /p:Configuration=Release `
         /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
         $msBuildVerbosityArg
-
-    # Measure publish size.
-    $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
-        Measure-Object -Property Length -Sum).Sum / 1Mb
-    Write-Output ("Published size: {0:N2} MB" -f $publishSize)
 }
 finally {
     Pop-Location
