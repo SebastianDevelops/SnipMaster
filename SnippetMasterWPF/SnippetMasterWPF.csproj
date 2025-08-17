@@ -43,21 +43,20 @@
     <None Remove="Services\tessdata\pdf.ttf" />
     <None Remove="snippet-master-icon.ico" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <None Include="Services\tessdata\**\*">
+    <Content Include="Services\tessdata\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Link>tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </None>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
   </ItemGroup>
+
   
   <ItemGroup>
     <Resource Include="Assets\wpfui-icon-256.png" />
     <Resource Include="Assets\wpfui-icon-1024.png" />
     <Resource Include="Services\tessdata\eng.traineddata">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Services\tessdata\pdf.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
