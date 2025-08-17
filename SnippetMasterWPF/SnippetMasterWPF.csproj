@@ -70,4 +70,10 @@
     <ProjectReference Include="..\SnippetMaster.BrowserConnect\SnippetMaster.BrowserConnect.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Assets\Monaco\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
