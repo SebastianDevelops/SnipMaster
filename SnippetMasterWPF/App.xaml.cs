@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SnippetMaster.BrowserConnect;
 using SnippetMasterWPF.Infrastructure.Mvvm;
 using SnippetMasterWPF.Services;
 using SnippetMasterWPF.ViewModels.Pages;
@@ -52,6 +51,7 @@ namespace SnippetMasterWPF
                 services.AddTransient<ISnippingService, SnippingService>();
                 services.AddHttpClient();
                 services.AddTransient<IApiClient, ApiClient>();
+                services.AddSingleton<ISnackbarService, SnackbarService>();
                 services.AddSingleton<INotificationService, NotificationService>();
                 services.AddSingleton<SnipMasterLib.Services.IClipboardService, SnipMasterLib.Services.ClipboardService>();
 
@@ -68,6 +68,7 @@ namespace SnippetMasterWPF
                 services.AddSingleton<SettingsViewModel>();
                 services.AddSingleton<QuickTextActionsPage>();
                 services.AddSingleton<QuickTextActionsViewModel>();
+                services.AddSingleton<ClipboardHistoryPage>();
                 services.AddTransient<ClipboardHistoryWindow>();
                 services.AddTransient<ClipboardHistoryWindowViewModel>();
             }).Build();

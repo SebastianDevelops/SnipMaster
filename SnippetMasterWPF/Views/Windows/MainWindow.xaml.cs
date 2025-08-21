@@ -19,7 +19,8 @@ namespace SnippetMasterWPF.Views.Windows
             MainWindowViewModel viewModel,
             DashboardViewModel dashboardViewModel,
             IPageService pageService,
-            INavigationService navigationService
+            INavigationService navigationService,
+            ISnackbarService snackbarService
         )
         {
             ViewModel = viewModel;
@@ -31,6 +32,7 @@ namespace SnippetMasterWPF.Views.Windows
             SetPageService(pageService);
 
             navigationService.SetNavigationControl(RootNavigation);
+            snackbarService.SetSnackbarPresenter(SnackbarPresenter);
             HotKeysManager.SetupSystemHook();
 
             _trayIcon = new NotifyIcon();

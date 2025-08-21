@@ -68,7 +68,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SnipMasterLib\SnipMasterLib.csproj" />
-    <ProjectReference Include="..\SnippetMaster.BrowserConnect\SnippetMaster.BrowserConnect.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,104 @@
+<Page
+    x:Class="SnippetMasterWPF.Views.Pages.ClipboardHistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SnippetMasterWPF.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="ClipboardHistoryPage"
+    d:DataContext="{d:DesignInstance local:ClipboardHistoryPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+    
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Page.Resources>
+
+    <Grid Height="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=ActualHeight}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TextBox Grid.Row="0" 
+                    Margin="0,0,0,16" 
+                    PlaceholderText="Search clipboard..."
+                    Text="{Binding ViewModel.SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding ViewModel.ClipboardEntries}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ui:Card Margin="0,0,0,8" Padding="12" Cursor="Hand">
+                            <ui:Card.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" 
+                                              Command="{Binding DataContext.ViewModel.CopyToClipboardCommand, 
+                                                       RelativeSource={RelativeSource AncestorType=Page}}"
+                                              CommandParameter="{Binding}"/>
+                            </ui:Card.InputBindings>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Delete button in top right -->
+                                <ui:Button Grid.Row="0" 
+                                           HorizontalAlignment="Right" 
+                                           VerticalAlignment="Top"
+                                           Width="24" Height="24"
+                                           Padding="0"
+                                           Appearance="Secondary"
+                                           Command="{Binding DataContext.ViewModel.DeleteEntryCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                           CommandParameter="{Binding}">
+                                    <ui:SymbolIcon Symbol="Delete24" FontSize="12"/>
+                                </ui:Button>
+                                
+                                <TextBlock Grid.Row="0" Text="{Binding Content}" 
+                                           TextWrapping="Wrap" MaxHeight="60" 
+                                           TextTrimming="CharacterEllipsis"
+                                           Margin="0,0,30,0"/>
+                                
+                                <TextBlock Grid.Row="1" Text="{Binding CreatedAt, StringFormat='{}{0:HH:mm:ss}'}" 
+                                           FontSize="10" Opacity="0.7" 
+                                           HorizontalAlignment="Left" Margin="0,4,0,0"/>
+                                
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                                    <TextBlock Text="📌" Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisConverter}}" 
+                                               VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <ui:Button Command="{Binding DataContext.ViewModel.TogglePinCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                               CommandParameter="{Binding}"
+                                               Appearance="Secondary">
+                                        <ui:Button.Content>
+                                            <TextBlock>
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="Pin"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                                                                <Setter Property="Text" Value="Unpin"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </ui:Button.Content>
+                                    </ui:Button>
+                                </StackPanel>
+                            </Grid>
+                        </ui:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

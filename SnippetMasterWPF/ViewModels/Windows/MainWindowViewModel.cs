@@ -25,6 +25,12 @@ namespace SnippetMasterWPF.ViewModels.Windows
             },
             new NavigationViewItem()
             {
+                Content = "Clipboard History (Ctrl+Shift+V)",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.ClipboardTextLtr24 },
+                TargetPageType = typeof(Views.Pages.ClipboardHistoryPage)
+            },
+            new NavigationViewItem()
+            {
                 Content = "Text Comparison",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentLandscapeSplitHint24 },
                 TargetPageType = typeof(Views.Pages.DataPage)

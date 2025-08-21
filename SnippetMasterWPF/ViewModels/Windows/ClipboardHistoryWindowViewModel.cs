@@ -80,5 +80,13 @@ public partial class ClipboardHistoryWindowViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private async Task DeleteEntry(ClipboardEntry entry)
+    {
+        await _clipboardService.DeleteAsync(entry.Id);
+        ClipboardEntries.Remove(entry);
+        _notificationService.ShowNotification("Deleted", "Clipboard entry removed");
+    }
+
 
 }

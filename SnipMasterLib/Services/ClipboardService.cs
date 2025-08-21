@@ -78,10 +78,25 @@ public class ClipboardService : IClipboardService, IDisposable
         using var connection = new SqliteConnection(_connectionString);
         await connection.OpenAsync();
         
-        // Insert new entry
-        await connection.ExecuteAsync(
-            "INSERT INTO ClipboardEntries (Content, CreatedAt, ContentType, IsPinned) VALUES (@Content, @CreatedAt, @ContentType, @IsPinned)",
-            new { Content = content, CreatedAt = DateTime.UtcNow, ContentType = "text", IsPinned = false });
+        // Check if content already exists
+        var existingEntry = await connection.QueryFirstOrDefaultAsync<ClipboardEntry>(
+            "SELECT * FROM ClipboardEntries WHERE Content = @Content",
+            new { Content = content });
+        
+        if (existingEntry != null)
+        {
+            // Update existing entry's timestamp to move it to top
+            await connection.ExecuteAsync(
+                "UPDATE ClipboardEntries SET CreatedAt = @CreatedAt WHERE Id = @Id",
+                new { CreatedAt = DateTime.UtcNow, Id = existingEntry.Id });
+        }
+        else
+        {
+            // Insert new entry
+            await connection.ExecuteAsync(
+                "INSERT INTO ClipboardEntries (Content, CreatedAt, ContentType, IsPinned) VALUES (@Content, @CreatedAt, @ContentType, @IsPinned)",
+                new { Content = content, CreatedAt = DateTime.UtcNow, ContentType = "text", IsPinned = false });
+        }
         
         // Auto-cleanup: Keep only 30 most recent unpinned entries
         await connection.ExecuteAsync(@"
