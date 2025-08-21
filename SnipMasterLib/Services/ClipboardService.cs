@@ -24,6 +24,8 @@ public class ClipboardService : IClipboardService, IDisposable
     {
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
+        
+        // Create table if not exists
         connection.Execute(@"
             CREATE TABLE IF NOT EXISTS ClipboardEntries (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,6 +33,16 @@ public class ClipboardService : IClipboardService, IDisposable
                 CreatedAt DATETIME NOT NULL,
                 ContentType TEXT NOT NULL DEFAULT 'text'
             )");
+        
+        // Add IsPinned column if it doesn't exist (migration)
+        try
+        {
+            connection.Execute("ALTER TABLE ClipboardEntries ADD COLUMN IsPinned BOOLEAN NOT NULL DEFAULT 0");
+        }
+        catch
+        {
+            // Column already exists, ignore error
+        }
     }
 
     public void StartMonitoring()
@@ -65,9 +77,22 @@ public class ClipboardService : IClipboardService, IDisposable
     {
         using var connection = new SqliteConnection(_connectionString);
         await connection.OpenAsync();
+        
+        // Insert new entry
         await connection.ExecuteAsync(
-            "INSERT INTO ClipboardEntries (Content, CreatedAt, ContentType) VALUES (@Content, @CreatedAt, @ContentType)",
-            new { Content = content, CreatedAt = DateTime.UtcNow, ContentType = "text" });
+            "INSERT INTO ClipboardEntries (Content, CreatedAt, ContentType, IsPinned) VALUES (@Content, @CreatedAt, @ContentType, @IsPinned)",
+            new { Content = content, CreatedAt = DateTime.UtcNow, ContentType = "text", IsPinned = false });
+        
+        // Auto-cleanup: Keep only 30 most recent unpinned entries
+        await connection.ExecuteAsync(@"
+            DELETE FROM ClipboardEntries 
+            WHERE IsPinned = 0 
+            AND Id NOT IN (
+                SELECT Id FROM ClipboardEntries 
+                WHERE IsPinned = 0 
+                ORDER BY CreatedAt DESC 
+                LIMIT 30
+            )");
     }
 
     public async Task<IEnumerable<ClipboardEntry>> GetHistoryAsync(int limit = 50)
@@ -75,8 +100,18 @@ public class ClipboardService : IClipboardService, IDisposable
         using var connection = new SqliteConnection(_connectionString);
         await connection.OpenAsync();
         return await connection.QueryAsync<ClipboardEntry>(
-            "SELECT * FROM ClipboardEntries ORDER BY CreatedAt DESC LIMIT @Limit",
+            "SELECT * FROM ClipboardEntries ORDER BY IsPinned DESC, CreatedAt DESC LIMIT @Limit",
             new { Limit = limit });
+    }
+
+    public async Task<IEnumerable<ClipboardEntry>> SearchAsync(string searchTerm, int page = 0, int pageSize = 10)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+        var offset = page * pageSize;
+        return await connection.QueryAsync<ClipboardEntry>(
+            "SELECT * FROM ClipboardEntries WHERE Content LIKE @SearchTerm ORDER BY IsPinned DESC, CreatedAt DESC LIMIT @PageSize OFFSET @Offset",
+            new { SearchTerm = $"%{searchTerm}%", PageSize = pageSize, Offset = offset });
     }
 
     public async Task<ClipboardEntry?> GetByIdAsync(int id)
@@ -98,7 +133,16 @@ public class ClipboardService : IClipboardService, IDisposable
     {
         using var connection = new SqliteConnection(_connectionString);
         await connection.OpenAsync();
-        await connection.ExecuteAsync("DELETE FROM ClipboardEntries");
+        await connection.ExecuteAsync("DELETE FROM ClipboardEntries WHERE IsPinned = 0");
+    }
+
+    public async Task TogglePinAsync(int id)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync(
+            "UPDATE ClipboardEntries SET IsPinned = NOT IsPinned WHERE Id = @Id",
+            new { Id = id });
     }
 
     public void Dispose()

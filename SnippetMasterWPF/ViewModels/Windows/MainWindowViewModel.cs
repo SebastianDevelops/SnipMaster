@@ -19,6 +19,12 @@ namespace SnippetMasterWPF.ViewModels.Windows
             },
             new NavigationViewItem()
             {
+                Content = "Quick Text Actions",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Flash24 },
+                TargetPageType = typeof(Views.Pages.QuickTextActionsPage)
+            },
+            new NavigationViewItem()
+            {
                 Content = "Text Comparison",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentLandscapeSplitHint24 },
                 TargetPageType = typeof(Views.Pages.DataPage)

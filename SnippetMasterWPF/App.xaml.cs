@@ -66,6 +66,10 @@ namespace SnippetMasterWPF
                 services.AddTransient<IDiffView, DataPage>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
+                services.AddSingleton<QuickTextActionsPage>();
+                services.AddSingleton<QuickTextActionsViewModel>();
+                services.AddTransient<ClipboardHistoryWindow>();
+                services.AddTransient<ClipboardHistoryWindowViewModel>();
             }).Build();
 
         /// <summary>

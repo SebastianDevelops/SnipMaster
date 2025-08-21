@@ -21,10 +21,23 @@ namespace SnippetMasterWPF.Services
                 MessageBox.Show($"Failed to register shortcut {ex.Message}", "Error");
             }
         }
+
+        public void RegisterClipboardHistoryHotkey(Action clipboardHistoryAction)
+        {
+            try
+            {
+                HotKeysManager.AddHotkey(ModifierKeys.Control | ModifierKeys.Shift, Key.V, clipboardHistoryAction);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to register clipboard history shortcut {ex.Message}", "Error");
+            }
+        }
     }
 
     public interface IHotKeyService
     {
         void RegisterHotkeys(Action snipAction);
+        void RegisterClipboardHistoryHotkey(Action clipboardHistoryAction);
     }
 }

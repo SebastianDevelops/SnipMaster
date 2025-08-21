@@ -12,8 +12,8 @@ namespace SnippetMasterWPF.Services
     public class ApplicationHostService : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
-
         private INavigationWindow _navigationWindow;
+        private ClipboardHistoryWindow? _clipboardWindow;
 
         public ApplicationHostService(IServiceProvider serviceProvider)
         {
@@ -31,6 +31,10 @@ namespace SnippetMasterWPF.Services
             // Start clipboard monitoring
             var clipboardService = _serviceProvider.GetService<SnipMasterLib.Services.IClipboardService>();
             clipboardService?.StartMonitoring();
+            
+            // Register clipboard history hotkey
+            var hotKeyService = _serviceProvider.GetService<IHotKeyService>();
+            hotKeyService?.RegisterClipboardHistoryHotkey(ShowClipboardHistory);
         }
 
         /// <summary>
@@ -44,6 +48,21 @@ namespace SnippetMasterWPF.Services
             clipboardService?.StopMonitoring();
             
             await Task.CompletedTask;
+        }
+        
+        private void ShowClipboardHistory()
+        {
+            if (_clipboardWindow?.IsVisible == true)
+            {
+                _clipboardWindow.Close();
+                _clipboardWindow = null;
+            }
+            else
+            {
+                _clipboardWindow?.Close();
+                _clipboardWindow = _serviceProvider.GetService<Views.Windows.ClipboardHistoryWindow>();
+                _clipboardWindow?.Show();
+            }
         }
 
         /// <summary>
