@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetMasterWPF", "Snippet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetMaster.Api", "SnippetMaster.Api\SnippetMaster.Api.csproj", "{107F14EB-2BAF-41C6-872B-BC36DA142699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipMaster.Compression.Document", "SnipMaster.Compression.Document\SnipMaster.Compression.Document.csproj", "{636416F6-3110-4653-ACBF-C58305A2E794}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipMaster.Compression", "SnipMaster.Compression\SnipMaster.Compression.csproj", "{636416F6-3110-4653-ACBF-C58305A2E794}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

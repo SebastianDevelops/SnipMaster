@@ -31,6 +31,12 @@ namespace SnippetMasterWPF.ViewModels.Windows
             },
             new NavigationViewItem()
             {
+                Content = "Document Compression",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.FolderZip24 },
+                TargetPageType = typeof(Views.Pages.DocumentCompressionPage)
+            },
+            new NavigationViewItem()
+            {
                 Content = "Text Comparison",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentLandscapeSplitHint24 },
                 TargetPageType = typeof(Views.Pages.DataPage)
