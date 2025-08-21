@@ -53,6 +53,7 @@ namespace SnippetMasterWPF
                 services.AddHttpClient();
                 services.AddTransient<IApiClient, ApiClient>();
                 services.AddSingleton<INotificationService, NotificationService>();
+                services.AddSingleton<SnipMasterLib.Services.IClipboardService, SnipMasterLib.Services.ClipboardService>();
 
                 // Main window with navigation
                 services.AddSingleton<INavigationWindow, MainWindow>();

@@ -27,6 +27,10 @@ namespace SnippetMasterWPF.Services
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await HandleActivationAsync();
+            
+            // Start clipboard monitoring
+            var clipboardService = _serviceProvider.GetService<SnipMasterLib.Services.IClipboardService>();
+            clipboardService?.StartMonitoring();
         }
 
         /// <summary>
@@ -35,6 +39,10 @@ namespace SnippetMasterWPF.Services
         /// <param name="cancellationToken">Indicates that the shutdown process should no longer be graceful.</param>
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            // Stop clipboard monitoring
+            var clipboardService = _serviceProvider.GetService<SnipMasterLib.Services.IClipboardService>();
+            clipboardService?.StopMonitoring();
+            
             await Task.CompletedTask;
         }
 
