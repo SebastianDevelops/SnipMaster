@@ -1,0 +1,157 @@
+<Page
+    x:Class="SnippetMasterWPF.Views.Pages.MediaCompressionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SnippetMasterWPF.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="MediaCompressionPage"
+    d:DataContext="{d:DesignInstance local:MediaCompressionPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+    
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <local:BytesToKbConverter x:Key="BytesToKbConverter"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,24"
+            FontSize="28"
+            FontWeight="Medium"
+            Text="Image/Video Compression" />
+
+        <!-- Upload Section -->
+        <ui:Card Grid.Row="1" Padding="24" Margin="0,0,0,16">
+            <Grid>
+                <Border
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                    BorderThickness="2"
+                    CornerRadius="8"
+                    AllowDrop="True"
+                    Drop="DropArea_Drop"
+                    DragOver="DropArea_DragOver"
+                    IsEnabled="{Binding ViewModel.IsNotProcessing}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40">
+                        <ui:SymbolIcon Symbol="Image24" FontSize="48" Margin="0,0,0,16"/>
+                        <TextBlock Text="Drag &amp; Drop Media Files Here" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Supports: JPG, PNG, GIF, SVG, MP4, AVI, MOV, WMV" FontSize="12" Opacity="0.7" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                        
+                        <!-- Compression Mode Selection -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <RadioButton Content="Lossless" IsChecked="{Binding ViewModel.IsLosslessMode}" Margin="0,0,16,0">
+                                <RadioButton.ToolTip>
+                                    <ToolTip Content="✓ Zero quality loss - identical to original&#x0a;✓ Fast processing (30 seconds - 2 minutes)&#x0a;✓ Perfect for archiving important files&#x0a;• Moderate file size reduction (5-15%)"/>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+                            <RadioButton Content="Lossy" IsChecked="{Binding ViewModel.IsLossyMode}">
+                                <RadioButton.ToolTip>
+                                    <ToolTip Content="✓ Excellent compression (40-70% smaller files)&#x0a;✓ High quality - visually identical to most people&#x0a;• Slower processing (3-10 minutes)&#x0a;• Tiny quality loss (unnoticeable for most content)"/>
+                                </RadioButton.ToolTip>
+                            </RadioButton>
+                        </StackPanel>
+                        
+                        <ui:Button Content="Browse Files" Command="{Binding ViewModel.BrowseFilesCommand}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Progress Overlay -->
+                <Border Background="{DynamicResource ApplicationBackgroundBrush}" 
+                        Opacity="0.9" 
+                        CornerRadius="8"
+                        Visibility="{Binding ViewModel.IsProcessing, Converter={StaticResource BoolToVisConverter}}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ui:ProgressRing Width="40" Height="40" Margin="0,0,0,16" IsIndeterminate="True"/>
+                        <TextBlock Text="{Binding ViewModel.ProcessingStatus}" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <ProgressBar Value="{Binding ViewModel.ProgressPercentage}" Maximum="100" Width="200" Height="4" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding ViewModel.ProgressPercentage, StringFormat='{}{0}%'}" FontSize="12" HorizontalAlignment="Center" Opacity="0.8"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ui:Card>
+
+        <!-- Compressed Files List -->
+        <ui:Card Grid.Row="2" Padding="16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="Compressed Media Files" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,12"/>
+                
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding ViewModel.CompressedFiles}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ui:Card Margin="0,0,0,8" Padding="12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <ui:SymbolIcon Grid.Column="0" FontSize="24" Margin="0,0,12,0" VerticalAlignment="Center">
+                                            <ui:SymbolIcon.Style>
+                                                <Style TargetType="ui:SymbolIcon">
+                                                    <Setter Property="Symbol" Value="Image24"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsVideo}" Value="True">
+                                                            <Setter Property="Symbol" Value="Video24"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ui:SymbolIcon.Style>
+                                        </ui:SymbolIcon>
+                                        
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+                                            <TextBlock FontSize="11" Opacity="0.7">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0:N0} KB → {1:N0} KB ({2:F1}% saved)">
+                                                        <Binding Path="OriginalSize" Converter="{StaticResource BytesToKbConverter}"/>
+                                                        <Binding Path="CompressedSize" Converter="{StaticResource BytesToKbConverter}"/>
+                                                        <Binding Path="SpaceSavedPercentage"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        
+                                        <ui:Button Grid.Column="2" Content="Open Folder" 
+                                                   Command="{Binding DataContext.ViewModel.OpenFolderCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                   CommandParameter="{Binding FilePath}"
+                                                   Appearance="Secondary" Margin="4,0"/>
+                                        
+                                        <ui:Button Grid.Column="3" 
+                                                   Command="{Binding DataContext.ViewModel.DeleteFileCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                   CommandParameter="{Binding}"
+                                                   Appearance="Secondary" Width="32" Height="32" Padding="0">
+                                            <ui:SymbolIcon Symbol="Delete24" FontSize="14"/>
+                                        </ui:Button>
+                                    </Grid>
+                                </ui:Card>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </ui:Card>
+    </Grid>
+</Page>

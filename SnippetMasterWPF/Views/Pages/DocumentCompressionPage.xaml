@@ -54,7 +54,9 @@
                         Visibility="{Binding ViewModel.IsProcessing, Converter={StaticResource BoolToVisConverter}}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <ui:ProgressRing Width="40" Height="40" Margin="0,0,0,16" IsIndeterminate="True"/>
-                        <TextBlock Text="{Binding ViewModel.ProcessingStatus}" FontSize="14" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding ViewModel.ProcessingStatus}" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <ProgressBar Value="{Binding ViewModel.ProgressPercentage}" Maximum="100" Width="200" Height="4" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding ViewModel.ProgressPercentage, StringFormat='{}{0}%'}" FontSize="12" HorizontalAlignment="Center" Opacity="0.8"/>
                     </StackPanel>
                 </Border>
             </Grid>

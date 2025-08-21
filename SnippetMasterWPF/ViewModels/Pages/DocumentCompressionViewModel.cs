@@ -24,6 +24,9 @@ public partial class DocumentCompressionViewModel : ObservableObject
     [ObservableProperty]
     private string _processingStatus = string.Empty;
 
+    [ObservableProperty]
+    private int _progressPercentage = 0;
+
     public bool IsNotProcessing => !IsProcessing;
 
     private readonly string[] _supportedExtensions = { ".pdf", ".docx", ".txt", ".csv", ".xml", ".rtf", ".doc" };
@@ -69,15 +72,21 @@ public partial class DocumentCompressionViewModel : ObservableObject
 
         IsProcessing = true;
         
-        foreach (var file in validFiles)
+        for (int i = 0; i < validFiles.Length; i++)
         {
+            var file = validFiles[i];
             try
             {
-                ProcessingStatus = $"Compressing {Path.GetFileName(file)}...";
+                var baseProgress = (i * 100) / validFiles.Length;
+                ProgressPercentage = baseProgress;
+                ProcessingStatus = $"Compressing {Path.GetFileName(file)} ({i + 1}/{validFiles.Length})...";
                 
                 var outputPath = Path.Combine(_compressedFilesFolder, Path.GetFileName(file));
-                var compressedPath = await _compressionService.CompressFileAsync(file, outputPath, CompressionType.Deflate);
+                var compressedPath = await _compressionService.CompressFileAsync(file, outputPath, CompressionType.Zstandard);
                 var compressionInfo = await _compressionService.GetCompressionInfoAsync(file, compressedPath);
+                
+                // Complete progress for this file
+                ProgressPercentage = ((i + 1) * 100) / validFiles.Length;
 
                 var fileInfo = new CompressedFileInfo
                 {
@@ -98,8 +107,12 @@ public partial class DocumentCompressionViewModel : ObservableObject
             }
         }
 
+        ProgressPercentage = 100;
+        await Task.Delay(500); // Show 100% briefly
+        
         IsProcessing = false;
         ProcessingStatus = string.Empty;
+        ProgressPercentage = 0;
     }
 
     [RelayCommand]

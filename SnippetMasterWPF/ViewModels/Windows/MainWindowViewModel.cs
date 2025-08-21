@@ -37,6 +37,12 @@ namespace SnippetMasterWPF.ViewModels.Windows
             },
             new NavigationViewItem()
             {
+                Content = "Image/Video Compression",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.ImageMultiple24 },
+                TargetPageType = typeof(Views.Pages.MediaCompressionPage)
+            },
+            new NavigationViewItem()
+            {
                 Content = "Text Comparison",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentLandscapeSplitHint24 },
                 TargetPageType = typeof(Views.Pages.DataPage)

@@ -1,30 +1,32 @@
 using System.IO.Compression;
+using ZstdNet;
 
 namespace SnipMaster.Compression.Services;
 
 public class CompressionService : ICompressionService
 {
-    public async Task<string> CompressFileAsync(string inputFilePath, string? outputFilePath = null, CompressionType type = CompressionType.GZip)
+    public async Task<string> CompressFileAsync(string inputFilePath, string? outputFilePath = null, CompressionType type = CompressionType.Zstandard)
     {
         if (!File.Exists(inputFilePath))
             throw new FileNotFoundException($"Input file not found: {inputFilePath}");
 
-        if (outputFilePath == null)
-        {
-            var extension = type == CompressionType.GZip ? ".gz" : string.Empty;
-            outputFilePath = inputFilePath + extension;
-        }
+        outputFilePath ??= inputFilePath;
 
-        using var inputStream = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read);
-        using var outputStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write);
-        
-        if (type == CompressionType.GZip)
+        if (type == CompressionType.Zstandard)
         {
+            return await CompressWithZstandardAsync(inputFilePath, outputFilePath);
+        }
+        else if (type == CompressionType.GZip)
+        {
+            using var inputStream = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read);
+            using var outputStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write);
             using var compressionStream = new GZipStream(outputStream, CompressionLevel.Optimal);
             await inputStream.CopyToAsync(compressionStream);
         }
         else
         {
+            using var inputStream = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read);
+            using var outputStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write);
             using var compressionStream = new DeflateStream(outputStream, CompressionLevel.Optimal);
             await inputStream.CopyToAsync(compressionStream);
         }
@@ -32,33 +34,51 @@ public class CompressionService : ICompressionService
         return outputFilePath;
     }
 
-    public async Task<string> DecompressFileAsync(string compressedFilePath, string? outputFilePath = null, CompressionType type = CompressionType.GZip)
+    public async Task<string> DecompressFileAsync(string compressedFilePath, string? outputFilePath = null, CompressionType type = CompressionType.Zstandard)
     {
         if (!File.Exists(compressedFilePath))
             throw new FileNotFoundException($"Compressed file not found: {compressedFilePath}");
 
-        if (outputFilePath == null)
-        {
-            outputFilePath = type == CompressionType.GZip && compressedFilePath.EndsWith(".gz")
-                ? compressedFilePath[..^3]
-                : compressedFilePath + ".decompressed";
-        }
+        outputFilePath ??= compressedFilePath + ".decompressed";
 
-        using var inputStream = new FileStream(compressedFilePath, FileMode.Open, FileAccess.Read);
-        using var outputStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write);
-        
-        if (type == CompressionType.GZip)
+        if (type == CompressionType.Zstandard)
         {
+            return await DecompressWithZstandardAsync(compressedFilePath, outputFilePath);
+        }
+        else if (type == CompressionType.GZip)
+        {
+            using var inputStream = new FileStream(compressedFilePath, FileMode.Open, FileAccess.Read);
+            using var outputStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write);
             using var decompressionStream = new GZipStream(inputStream, CompressionMode.Decompress);
             await decompressionStream.CopyToAsync(outputStream);
         }
         else
         {
+            using var inputStream = new FileStream(compressedFilePath, FileMode.Open, FileAccess.Read);
+            using var outputStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write);
             using var decompressionStream = new DeflateStream(inputStream, CompressionMode.Decompress);
             await decompressionStream.CopyToAsync(outputStream);
         }
 
         return outputFilePath;
+    }
+
+    private async Task<string> CompressWithZstandardAsync(string inputPath, string outputPath)
+    {
+        var inputBytes = await File.ReadAllBytesAsync(inputPath);
+        using var compressor = new Compressor();
+        var compressedBytes = compressor.Wrap(inputBytes);
+        await File.WriteAllBytesAsync(outputPath, compressedBytes);
+        return outputPath;
+    }
+
+    private async Task<string> DecompressWithZstandardAsync(string inputPath, string outputPath)
+    {
+        var compressedBytes = await File.ReadAllBytesAsync(inputPath);
+        using var decompressor = new Decompressor();
+        var decompressedBytes = decompressor.Unwrap(compressedBytes);
+        await File.WriteAllBytesAsync(outputPath, decompressedBytes);
+        return outputPath;
     }
 
     public async Task<CompressionResult> GetCompressionInfoAsync(string originalFilePath, string compressedFilePath)

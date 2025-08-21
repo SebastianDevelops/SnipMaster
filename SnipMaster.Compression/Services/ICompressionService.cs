@@ -10,7 +10,8 @@ public interface ICompressionService
 public enum CompressionType
 {
     GZip,
-    Deflate
+    Deflate,
+    Zstandard
 }
 
 public class CompressionResult

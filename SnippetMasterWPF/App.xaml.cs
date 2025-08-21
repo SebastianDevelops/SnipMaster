@@ -54,6 +54,7 @@ namespace SnippetMasterWPF
                 services.AddSingleton<ISnackbarService, SnackbarService>();
                 services.AddSingleton<INotificationService, NotificationService>();
                 services.AddSingleton<SnipMaster.Compression.Services.ICompressionService, SnipMaster.Compression.Services.CompressionService>();
+                services.AddSingleton<SnipMaster.Compression.Services.IMediaCompressionService, SnipMaster.Compression.Services.MediaCompressionService>();
                 services.AddSingleton<SnipMasterLib.Services.IClipboardService, SnipMasterLib.Services.ClipboardService>();
 
                 // Main window with navigation
@@ -72,6 +73,8 @@ namespace SnippetMasterWPF
                 services.AddSingleton<ClipboardHistoryPage>();
                 services.AddSingleton<DocumentCompressionPage>();
                 services.AddSingleton<DocumentCompressionViewModel>();
+                services.AddSingleton<MediaCompressionPage>();
+                services.AddSingleton<MediaCompressionViewModel>();
                 services.AddTransient<ClipboardHistoryWindow>();
                 services.AddTransient<ClipboardHistoryWindowViewModel>();
             }).Build();
