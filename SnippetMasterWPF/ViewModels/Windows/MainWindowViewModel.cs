@@ -46,6 +46,12 @@ namespace SnippetMasterWPF.ViewModels.Windows
                 Content = "Text Comparison",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentLandscapeSplitHint24 },
                 TargetPageType = typeof(Views.Pages.DataPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "File Conversion",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowSwap24 },
+                TargetPageType = typeof(Views.Pages.FileConversionPage)
             }
         };
 

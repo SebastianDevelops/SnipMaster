@@ -9,7 +9,6 @@ using SnippetMasterWPF.Views.Pages;
 using SnippetMasterWPF.Views.Windows;
 using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
 using System.Windows.Threading;
 using Wpf.Ui;
 
@@ -55,6 +54,11 @@ namespace SnippetMasterWPF
                 services.AddSingleton<INotificationService, NotificationService>();
                 services.AddSingleton<SnipMaster.Compression.Services.ICompressionService, SnipMaster.Compression.Services.CompressionService>();
                 services.AddSingleton<SnipMaster.Compression.Services.IMediaCompressionService, SnipMaster.Compression.Services.MediaCompressionService>();
+                services.AddSingleton<SnipMaster.Conversion.Services.IFileConversionService, SnipMaster.Conversion.Services.FileConversionService>();
+                services.AddSingleton<SnipMaster.Conversion.Services.IImageConversionService, SnipMaster.Conversion.Services.ImageConversionService>();
+                services.AddSingleton<SnipMaster.Conversion.Services.IDocumentConversionService, SnipMaster.Conversion.Services.DocumentConversionService>();
+                services.AddSingleton<SnipMaster.Conversion.Services.IConversionServiceFactory, SnipMaster.Conversion.Services.ConversionServiceFactory>();
+                services.AddSingleton<SnipMaster.Conversion.Services.IUniversalConversionService, SnipMaster.Conversion.Services.UniversalConversionService>();
                 services.AddSingleton<SnipMasterLib.Services.IClipboardService, SnipMasterLib.Services.ClipboardService>();
 
                 // Main window with navigation
@@ -75,6 +79,8 @@ namespace SnippetMasterWPF
                 services.AddSingleton<DocumentCompressionViewModel>();
                 services.AddSingleton<MediaCompressionPage>();
                 services.AddSingleton<MediaCompressionViewModel>();
+                services.AddSingleton<FileConversionPage>();
+                services.AddSingleton<FileConversionViewModel>();
                 services.AddTransient<ClipboardHistoryWindow>();
                 services.AddTransient<ClipboardHistoryWindowViewModel>();
             }).Build();
