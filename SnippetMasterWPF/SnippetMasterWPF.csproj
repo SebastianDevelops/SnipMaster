@@ -37,11 +37,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2 " />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Assets\pdfjs\**\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+
 
   <ItemGroup>
     <None Remove="Assets\wpfui-icon-256.png" />
