@@ -73,6 +73,7 @@
     <ProjectReference Include="..\SnipMaster.Conversion\SnipMaster.Conversion.csproj" />
     <ProjectReference Include="..\SnipMasterLib\SnipMasterLib.csproj" />
     <ProjectReference Include="..\SnipMaster.Compression\SnipMaster.Compression.csproj" />
+    <ProjectReference Include="..\SnipMaster.Modification\SnipMaster.Modification.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -60,6 +60,7 @@ namespace SnippetMasterWPF
                 services.AddSingleton<SnipMaster.Conversion.Services.IConversionServiceFactory, SnipMaster.Conversion.Services.ConversionServiceFactory>();
                 services.AddSingleton<SnipMaster.Conversion.Services.IUniversalConversionService, SnipMaster.Conversion.Services.UniversalConversionService>();
                 services.AddSingleton<SnipMasterLib.Services.IClipboardService, SnipMasterLib.Services.ClipboardService>();
+                services.AddSingleton<SnipMaster.Modification.Services.EditorStateService>();
 
                 // Main window with navigation
                 services.AddSingleton<INavigationWindow, MainWindow>();
@@ -81,6 +82,8 @@ namespace SnippetMasterWPF
                 services.AddSingleton<MediaCompressionViewModel>();
                 services.AddSingleton<FileConversionPage>();
                 services.AddSingleton<FileConversionViewModel>();
+                services.AddSingleton<PdfEditorView>();
+                services.AddSingleton<PdfEditorViewModel>();
                 services.AddTransient<ClipboardHistoryWindow>();
                 services.AddTransient<ClipboardHistoryWindowViewModel>();
             }).Build();

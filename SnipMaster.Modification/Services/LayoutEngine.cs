@@ -1,0 +1,179 @@
+using SnipMaster.Modification.Models;
+using UglyToad.PdfPig.Core;
+
+namespace SnipMaster.Modification.Services;
+
+public record PositionedGlyph(
+    char Character,
+    PdfRectangle CalculatedBoundingBox,
+    string FontName,
+    double PointSize,
+    SimpleColor Color
+);
+
+public record PositionedLine(
+    List<PositionedGlyph> Glyphs,
+    double BaseLineY
+);
+
+public class LayoutEngine
+{
+    private readonly LiveParagraph _paragraph;
+    private readonly FontMetricsCacheService _metricsCache;
+    private List<PositionedLine> _calculatedLayout = new();
+
+    public LayoutEngine(LiveParagraph paragraph, FontMetricsCacheService metricsCache)
+    {
+        _paragraph = paragraph;
+        _metricsCache = metricsCache;
+        Reflow();
+    }
+
+    public IReadOnlyList<PositionedLine> GetLayout() => _calculatedLayout;
+
+    public void DeleteGlyphs(int index, int count)
+    {
+        _paragraph.Glyphs.RemoveRange(index, count);
+        Reflow();
+    }
+
+    public void InsertText(int index, string text)
+    {
+        if (index < 0 || index > _paragraph.Glyphs.Count) return;
+
+        EditableGlyph templateStyleGlyph = null;
+        if (_paragraph.Glyphs.Any())
+        {
+            templateStyleGlyph = (index < _paragraph.Glyphs.Count) 
+                               ? _paragraph.Glyphs[index] 
+                               : _paragraph.Glyphs.Last();
+        }
+        else
+        {
+            return;
+        }
+
+        var newGlyphs = new List<EditableGlyph>();
+        foreach (char ch in text)
+        {
+            PdfRectangle newGlyphBbox;
+            
+            if (!_metricsCache.TryGetBoundingBox(templateStyleGlyph.FontName, ch, out newGlyphBbox))
+            {
+                newGlyphBbox = templateStyleGlyph.OriginalBoundingBox;
+            }
+
+            newGlyphs.Add(new EditableGlyph(
+                ch,
+                templateStyleGlyph.FontName,
+                templateStyleGlyph.PointSize,
+                templateStyleGlyph.Color,
+                newGlyphBbox,
+                templateStyleGlyph.IsBold,
+                templateStyleGlyph.IsItalic
+            ));
+        }
+
+        _paragraph.Glyphs.InsertRange(index, newGlyphs);
+        Reflow();
+    }
+
+    private void Reflow()
+    {
+        _calculatedLayout.Clear();
+        var box = _paragraph.BoundingBox;
+        if (!_paragraph.Glyphs.Any()) return;
+
+        // Use the first glyph's properties for initial line height calculation
+        double initialPointSize = _paragraph.Glyphs.First().PointSize;
+        double currentY = box.Top; // This will be the Top of the line box, not the baseline
+        double currentX = box.Left;
+        var currentLineGlyphs = new List<PositionedGlyph>();
+
+        var words = GroupGlyphsIntoWords(_paragraph.Glyphs);
+
+        foreach (var word in words)
+        {
+            // Measure the word's width based on the total span of its original glyphs' bounding boxes.
+            double wordStartX = word.First().OriginalBoundingBox.Left;
+            double wordEndX = word.Last().OriginalBoundingBox.Right;
+            double wordWidth = wordEndX - wordStartX;
+
+            // Check for line break
+            if (currentX > box.Left && currentX + wordWidth > box.Right)
+            {
+                if (currentLineGlyphs.Any())
+                {
+                    // Finalize the previous line before breaking
+                    var lineMaxHeight = currentLineGlyphs.Max(g => g.CalculatedBoundingBox.Height);
+                    var lineBaseline = currentY - lineMaxHeight;
+                    _calculatedLayout.Add(new PositionedLine(currentLineGlyphs, lineBaseline));
+                }
+                
+                currentX = box.Left;
+                double lineHeight = (currentLineGlyphs.Any() ? currentLineGlyphs.Max(g => g.PointSize) : initialPointSize) * 1.2;
+                currentY -= lineHeight;
+                currentLineGlyphs = new List<PositionedGlyph>();
+            }
+
+            // Calculate the offset to move the entire word block to the new cursor position.
+            // This preserves all internal kerning and spacing within the word.
+            double wordBlockOffsetX = currentX - word.First().OriginalBoundingBox.Left;
+
+            foreach (var glyph in word)
+            {
+                var originalBox = glyph.OriginalBoundingBox;
+                
+                // The new position is its ORIGINAL position, shifted by the calculated offsets.
+                var newBounds = new PdfRectangle(
+                    originalBox.Left + wordBlockOffsetX,
+                    currentY - (originalBox.Top - originalBox.Bottom),
+                    originalBox.Right + wordBlockOffsetX,
+                    currentY
+                );
+
+                currentLineGlyphs.Add(new PositionedGlyph(
+                    glyph.Character, newBounds, glyph.FontName, glyph.PointSize, glyph.Color
+                ));
+            }
+            
+            // Advance the cursor by the width of the entire word block.
+            currentX += wordWidth;
+        }
+
+        if (currentLineGlyphs.Any())
+        {
+            var lineMaxHeight = currentLineGlyphs.Max(g => g.CalculatedBoundingBox.Height);
+            var lineBaseline = currentY - lineMaxHeight;
+            _calculatedLayout.Add(new PositionedLine(currentLineGlyphs, lineBaseline));
+        }
+    }
+
+    private List<List<EditableGlyph>> GroupGlyphsIntoWords(List<EditableGlyph> glyphs)
+    {
+        var words = new List<List<EditableGlyph>>();
+        var currentWord = new List<EditableGlyph>();
+        
+        foreach (var glyph in glyphs)
+        {
+            if (glyph.Character == ' ')
+            {
+                if (currentWord.Any())
+                {
+                    words.Add(currentWord);
+                    currentWord = new List<EditableGlyph>();
+                }
+                words.Add(new List<EditableGlyph> { glyph });
+            }
+            else
+            {
+                currentWord.Add(glyph);
+            }
+        }
+        
+        if (currentWord.Any())
+            words.Add(currentWord);
+            
+        return words;
+    }
+}

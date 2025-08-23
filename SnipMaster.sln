@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipMaster.Compression", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipMaster.Conversion", "SnipMaster.Conversion\SnipMaster.Conversion.csproj", "{869903EF-01B6-4901-9190-3761F766A0F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipMaster.Modification", "SnipMaster.Modification\SnipMaster.Modification.csproj", "{69B0449B-5952-4B13-B909-D66A57604891}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{869903EF-01B6-4901-9190-3761F766A0F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{869903EF-01B6-4901-9190-3761F766A0F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{869903EF-01B6-4901-9190-3761F766A0F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69B0449B-5952-4B13-B909-D66A57604891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69B0449B-5952-4B13-B909-D66A57604891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69B0449B-5952-4B13-B909-D66A57604891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69B0449B-5952-4B13-B909-D66A57604891}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
