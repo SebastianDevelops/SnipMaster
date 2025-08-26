@@ -1,7 +1,6 @@
 using System.Diagnostics;
-using System.Drawing;
 using SnipMaster.Modification.Models;
-using System.Windows;
+using System.Drawing;
 
 namespace SnipMaster.Modification.Services;
 
@@ -173,16 +172,22 @@ public class EditorStateService
     {
         if (state.ActiveParagraph == null) return state;
 
-        var engine = new LayoutEngine(state.ActiveParagraph, state.MetricsCache);
-        engine.InsertText(action.CaretIndex, action.Text);
-        
-        var newLayouts = new Dictionary<LiveParagraph, IReadOnlyList<PositionedLine>>(state.PageLayouts)
+        var stateAfterDelete = state;
+        if (state.HasSelection)
         {
-            [state.ActiveParagraph] = engine.GetLayout()
+            stateAfterDelete = HandleDelete(state, new DeleteAction(state.SelectionStart, state.SelectionLength));
+        }
+
+        var engine = new LayoutEngine(stateAfterDelete.ActiveParagraph, stateAfterDelete.MetricsCache);
+        engine.InsertText(stateAfterDelete.CaretIndex, action.Text);
+        
+        var newLayouts = new Dictionary<LiveParagraph, IReadOnlyList<PositionedLine>>(stateAfterDelete.PageLayouts)
+        {
+            [stateAfterDelete.ActiveParagraph] = engine.GetLayout()
         };
 
-        var newCaretIndex = action.CaretIndex + action.Text.Length;
-        return state with 
+        var newCaretIndex = stateAfterDelete.CaretIndex + action.Text.Length;
+        return stateAfterDelete with 
         { 
             CaretIndex = newCaretIndex,
             SelectionAnchor = newCaretIndex,

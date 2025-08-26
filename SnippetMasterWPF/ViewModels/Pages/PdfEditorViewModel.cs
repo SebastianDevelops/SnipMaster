@@ -72,15 +72,33 @@ namespace SnippetMasterWPF.ViewModels.Pages
                 {
                     if (currentIndex == caretIndex)
                     {
+                        double caretHeight = glyph.PointSize * 1.2;
+                        double caretTop = line.BaseLineY + (glyph.PointSize * 0.2);
+                        
                         CaretPosition = new Rect(
                             glyph.CalculatedBoundingBox.Left,
-                            glyph.CalculatedBoundingBox.Bottom,
+                            caretTop,
                             1,
-                            glyph.CalculatedBoundingBox.Height);
+                            caretHeight);
                         return;
                     }
                     currentIndex++;
                 }
+            }
+            
+            // Edge case: caret is at the end of the paragraph
+            if (layout.Any() && layout.Last().Glyphs.Any())
+            {
+                var lastLine = layout.Last();
+                var lastGlyph = lastLine.Glyphs.Last();
+                double caretHeight = lastGlyph.PointSize * 1.2;
+                double caretTop = lastLine.BaseLineY + (lastGlyph.PointSize * 0.2);
+                
+                CaretPosition = new Rect(
+                    lastGlyph.CalculatedBoundingBox.Right,
+                    caretTop,
+                    1,
+                    caretHeight);
             }
         }
 
@@ -123,9 +141,9 @@ namespace SnippetMasterWPF.ViewModels.Pages
             _editorState.LoadDocument(filePath);
         }
         
-        public void ActivateParagraphAtPoint(Point viewPoint, int pageIndex, double pageHeight)
+        public void ActivateParagraphAtPoint(System.Windows.Point viewPoint, int pageIndex, double pageHeight)
         {
-            var modelPoint = new Point(viewPoint.X, pageHeight - viewPoint.Y);
+            var modelPoint = new System.Drawing.Point((int)viewPoint.X, (int)(pageHeight - viewPoint.Y));
             var state = _editorState.GetCurrentState();
             
             if (pageIndex >= state.DocumentPages.Count) return;
@@ -146,7 +164,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
             
             if (foundParagraphIndex >= 0)
             {
-                _editorState.Dispatch(new ActivateParagraphAction(pageIndex, foundParagraphIndex));
+                _editorState.Dispatch(new ActivateAndSetCaretAction(pageIndex, foundParagraphIndex, modelPoint));
             }
         }
 
@@ -217,7 +235,10 @@ namespace SnippetMasterWPF.ViewModels.Pages
 
         public void HandleTextInput(string text)
         {
-            _editorState.Dispatch(new PasteAction(text));
+            var state = _editorState.GetCurrentState();
+            if (state.ActiveParagraph == null) return;
+            
+            _editorState.Dispatch(new InsertTextAction(state.CaretIndex, text));
         }
 
         public void HandleBackspace()

@@ -70,7 +70,8 @@ public class LayoutEngine
                 templateStyleGlyph.Color,
                 newGlyphBbox,
                 templateStyleGlyph.IsBold,
-                templateStyleGlyph.IsItalic
+                templateStyleGlyph.IsItalic,
+                templateStyleGlyph.AdvanceWidth
             ));
         }
 
@@ -84,68 +85,52 @@ public class LayoutEngine
         var box = _paragraph.BoundingBox;
         if (!_paragraph.Glyphs.Any()) return;
 
-        // Use the first glyph's properties for initial line height calculation
-        double initialPointSize = _paragraph.Glyphs.First().PointSize;
-        double currentY = box.Top; // This will be the Top of the line box, not the baseline
+        double currentY = box.Top;
         double currentX = box.Left;
         var currentLineGlyphs = new List<PositionedGlyph>();
+        double averageLineHeight = _paragraph.Glyphs.First().PointSize * 1.2;
 
         var words = GroupGlyphsIntoWords(_paragraph.Glyphs);
 
         foreach (var word in words)
         {
-            // Measure the word's width based on the total span of its original glyphs' bounding boxes.
-            double wordStartX = word.First().OriginalBoundingBox.Left;
-            double wordEndX = word.Last().OriginalBoundingBox.Right;
-            double wordWidth = wordEndX - wordStartX;
+            double wordWidth = word.Sum(g => g.AdvanceWidth);
 
-            // Check for line break
             if (currentX > box.Left && currentX + wordWidth > box.Right)
             {
                 if (currentLineGlyphs.Any())
                 {
-                    // Finalize the previous line before breaking
-                    var lineMaxHeight = currentLineGlyphs.Max(g => g.CalculatedBoundingBox.Height);
-                    var lineBaseline = currentY - lineMaxHeight;
-                    _calculatedLayout.Add(new PositionedLine(currentLineGlyphs, lineBaseline));
+                    _calculatedLayout.Add(new PositionedLine(currentLineGlyphs, currentY));
                 }
                 
                 currentX = box.Left;
-                double lineHeight = (currentLineGlyphs.Any() ? currentLineGlyphs.Max(g => g.PointSize) : initialPointSize) * 1.2;
-                currentY -= lineHeight;
+                currentY -= averageLineHeight;
                 currentLineGlyphs = new List<PositionedGlyph>();
             }
 
-            // Calculate the offset to move the entire word block to the new cursor position.
-            // This preserves all internal kerning and spacing within the word.
-            double wordBlockOffsetX = currentX - word.First().OriginalBoundingBox.Left;
-
+            double glyphX = currentX;
             foreach (var glyph in word)
             {
-                var originalBox = glyph.OriginalBoundingBox;
-                
-                // The new position is its ORIGINAL position, shifted by the calculated offsets.
                 var newBounds = new PdfRectangle(
-                    originalBox.Left + wordBlockOffsetX,
-                    currentY - (originalBox.Top - originalBox.Bottom),
-                    originalBox.Right + wordBlockOffsetX,
+                    glyphX,
+                    currentY - glyph.OriginalBoundingBox.Height,
+                    glyphX + glyph.OriginalBoundingBox.Width,
                     currentY
                 );
 
                 currentLineGlyphs.Add(new PositionedGlyph(
                     glyph.Character, newBounds, glyph.FontName, glyph.PointSize, glyph.Color
                 ));
+                
+                glyphX += glyph.AdvanceWidth;
             }
             
-            // Advance the cursor by the width of the entire word block.
             currentX += wordWidth;
         }
 
         if (currentLineGlyphs.Any())
         {
-            var lineMaxHeight = currentLineGlyphs.Max(g => g.CalculatedBoundingBox.Height);
-            var lineBaseline = currentY - lineMaxHeight;
-            _calculatedLayout.Add(new PositionedLine(currentLineGlyphs, lineBaseline));
+            _calculatedLayout.Add(new PositionedLine(currentLineGlyphs, currentY));
         }
     }
 

@@ -103,15 +103,39 @@ public class PdfParserService
         var liveParagraphs = new List<LiveParagraph>();
         foreach (var letterGroup in paragraphLetterGroups)
         {
-            var editableGlyphs = letterGroup.Select(l => new EditableGlyph(
-                l.Value[0],
-                l.FontName,
-                l.PointSize,
-                ConvertColor(l.Color),
-                l.GlyphRectangle,
-                l.Font.IsBold ,
-                l.Font.IsItalic
-            )).ToList();
+            // The fix is here. We perform a simple, direct 1-to-1 conversion.
+            // We TRUST that the 'letterGroup' provided by the line-based grouping
+            // already contains all the necessary characters, including spaces, in the correct order.
+            var sortedLetters = letterGroup.OrderBy(l => l.StartBaseLine.Y).ThenBy(l => l.StartBaseLine.X).ToList();
+            var editableGlyphs = new List<EditableGlyph>();
+            
+            for (int i = 0; i < sortedLetters.Count; i++)
+            {
+                var letter = sortedLetters[i];
+                double advanceWidth;
+                
+                if (i < sortedLetters.Count - 1)
+                {
+                    var nextLetter = sortedLetters[i + 1];
+                    bool sameLine = Math.Abs(letter.StartBaseLine.Y - nextLetter.StartBaseLine.Y) < 1;
+                    advanceWidth = sameLine ? nextLetter.StartBaseLine.X - letter.StartBaseLine.X : letter.GlyphRectangle.Width;
+                }
+                else
+                {
+                    advanceWidth = letter.GlyphRectangle.Width;
+                }
+                
+                editableGlyphs.Add(new EditableGlyph(
+                    letter.Value[0],
+                    letter.FontName,
+                    letter.PointSize,
+                    ConvertColor(letter.Color),
+                    letter.GlyphRectangle,
+                    letter.Font.IsBold,
+                    letter.Font.IsItalic,
+                    advanceWidth
+                ));
+            }
 
             var boundingBox = CalculateBoundingBox(letterGroup);
             var alignment = CalculateAlignment(letterGroup, boundingBox);

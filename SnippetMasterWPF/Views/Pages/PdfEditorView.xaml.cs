@@ -87,47 +87,94 @@ namespace SnippetMasterWPF.Views.Pages
             }
         }
 
-        private (bool isBold, bool isItalic) GetEffectiveStyle(string fontName)
+        private static (string FamilyName, FontWeight Weight, FontStyle Style) ParsePdfFontName(string pdfFontName)
         {
-            var nameLower = fontName.ToLowerInvariant();
-            var nameHasBold = nameLower.Contains("bold") || nameLower.Contains("-b") || nameLower.Contains(",bold");
-            var nameHasItalic = nameLower.Contains("italic") || nameLower.Contains("oblique") || nameLower.Contains("-i") || nameLower.Contains(",italic");
+            if (string.IsNullOrEmpty(pdfFontName)) return ("Segoe UI", FontWeights.Normal, FontStyles.Normal);
             
-            return (nameHasBold, nameHasItalic);
+            string workingName = pdfFontName;
+            FontWeight weight = FontWeights.Normal;
+            FontStyle style = FontStyles.Normal;
+            
+            // Strip XXXXXX+ subset prefix
+            if (workingName.Length > 7 && workingName[6] == '+')
+            {
+                workingName = workingName.Substring(7);
+            }
+            
+            // Parse style keywords
+            var lowerName = workingName.ToLowerInvariant();
+            var keywords = new[] { "bold", "italic", "oblique", "light", "black", "heavy" };
+            
+            foreach (var keyword in keywords)
+            {
+                if (lowerName.Contains(keyword))
+                {
+                    switch (keyword)
+                    {
+                        case "bold":
+                            weight = FontWeights.Bold;
+                            break;
+                        case "italic":
+                        case "oblique":
+                            style = FontStyles.Italic;
+                            break;
+                        case "light":
+                            weight = FontWeights.Light;
+                            break;
+                        case "black":
+                        case "heavy":
+                            weight = FontWeights.Black;
+                            break;
+                    }
+                    
+                    // Remove keyword and separator
+                    var separators = new[] { "-" + keyword, "," + keyword, " " + keyword };
+                    foreach (var sep in separators)
+                    {
+                        if (workingName.Contains(sep, StringComparison.OrdinalIgnoreCase))
+                        {
+                            workingName = workingName.Replace(sep, "", StringComparison.OrdinalIgnoreCase);
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            return (workingName, weight, style);
         }
 
-        private GlyphTypeface GetGlyphTypeface(string fontName)
+        private GlyphTypeface GetGlyphTypeface(string pdfFontName)
         {
-            var (effectiveBold, effectiveItalic) = GetEffectiveStyle(fontName);
-            
-            var style = effectiveItalic ? FontStyles.Italic : FontStyles.Normal;
-            var weight = effectiveBold ? FontWeights.Bold : FontWeights.Normal;
-            var key = $"{fontName}_{style}_{weight}";
-
-            if (_glyphTypefaceCache.TryGetValue(key, out var cached))
+            if (_glyphTypefaceCache.TryGetValue(pdfFontName, out var cached))
             {
                 return cached;
             }
             
-            var typeface = new Typeface(new FontFamily(fontName), style, weight, FontStretches.Normal);
+            var (family, weight, style) = ParsePdfFontName(pdfFontName);
+            var typeface = new Typeface(new FontFamily(family), style, weight, FontStretches.Normal);
 
             if (typeface.TryGetGlyphTypeface(out var glyphTypeface))
             {
-                _glyphTypefaceCache[key] = glyphTypeface;
+                _glyphTypefaceCache[pdfFontName] = glyphTypeface;
                 return glyphTypeface;
             }
             
-            // --- Fallback Logic ---
-            var fallbackTypeface = new Typeface(fontName);
+            // First fallback: try with normal weight and style
+            SnippetMasterWPF.Services.LogService.Instance.Log($"[Renderer] FONT WARNING: Could not find '{family}' with specified style. Trying normal style.");
+            var fallbackTypeface = new Typeface(new FontFamily(family), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
             if (fallbackTypeface.TryGetGlyphTypeface(out var fallbackGlyphTypeface))
             {
-                 _glyphTypefaceCache[key] = fallbackGlyphTypeface;
-                 return fallbackGlyphTypeface;
+                _glyphTypefaceCache[pdfFontName] = fallbackGlyphTypeface;
+                return fallbackGlyphTypeface;
             }
 
-            // --- Final System Fallback ---
-            SnippetMasterWPF.Services.LogService.Instance.Log($"[Renderer] FONT ERROR: Could not find '{fontName}'. Falling back to Segoe UI.");
-            return GetGlyphTypeface("Segoe UI");
+            // Final fallback: Segoe UI
+            SnippetMasterWPF.Services.LogService.Instance.Log($"[Renderer] FONT ERROR: Could not find '{family}'. Falling back to Segoe UI.");
+            var (segoeFamily, segoeWeight, segoeStyle) = ParsePdfFontName("Segoe UI");
+            var segoeTypeface = new Typeface(new FontFamily(segoeFamily), segoeStyle, segoeWeight, FontStretches.Normal);
+            segoeTypeface.TryGetGlyphTypeface(out var segoeGlyphTypeface);
+            _glyphTypefaceCache[pdfFontName] = segoeGlyphTypeface;
+            return segoeGlyphTypeface;
         }
 
         private void RenderLayoutWithGlyphRuns(DrawingContext dc, IReadOnlyList<PositionedLine> layout, double pageHeight)
@@ -143,8 +190,7 @@ namespace SnippetMasterWPF.Views.Pages
                     bool isStyleChange = !isEndOfLine && (
                         line.Glyphs[i].FontName != line.Glyphs[currentRunStart].FontName ||
                         line.Glyphs[i].PointSize != line.Glyphs[currentRunStart].PointSize ||
-                        !line.Glyphs[i].Color.Equals(line.Glyphs[currentRunStart].Color) ||
-                        GetEffectiveStyle(line.Glyphs[i].FontName) != GetEffectiveStyle(line.Glyphs[currentRunStart].FontName)
+                        !line.Glyphs[i].Color.Equals(line.Glyphs[currentRunStart].Color)
                     );
 
                     if (isEndOfLine || isStyleChange)
@@ -164,8 +210,8 @@ namespace SnippetMasterWPF.Views.Pages
 
                         var glyphIndices = new ushort[runLength];
                         var advanceWidths = new double[runLength];
+                        var glyphOffsets = new List<Point>();
 
-                        // --- THE CRITICAL FIX IS HERE ---
                         for (int j = 0; j < runLength; j++)
                         {
                             var glyph = runGlyphs[j];
@@ -173,17 +219,13 @@ namespace SnippetMasterWPF.Views.Pages
                                               ? glyphIndex 
                                               : (ushort)0;
 
-                            // Calculate the advance width based on the distance to the NEXT glyph.
-                            if (j < runLength - 1)
-                            {
-                                // The advance width is the difference in starting positions.
-                                advanceWidths[j] = runGlyphs[j + 1].CalculatedBoundingBox.Left - glyph.CalculatedBoundingBox.Left;
-                            }
-                            else
-                            {
-                                // For the last glyph in a run, its advance width is its own bounding box width.
-                                advanceWidths[j] = glyph.CalculatedBoundingBox.Width;
-                            }
+                            advanceWidths[j] = 0;
+
+                            var glyphOffset = new Point(
+                                glyph.CalculatedBoundingBox.Left - firstGlyph.CalculatedBoundingBox.Left,
+                                0
+                            );
+                            glyphOffsets.Add(glyphOffset);
                         }
 
                         var baselineOrigin = new Point(
@@ -198,7 +240,8 @@ namespace SnippetMasterWPF.Views.Pages
                             glyphIndices,
                             baselineOrigin,
                             advanceWidths,
-                            null, null, null, null, null, null);
+                            glyphOffsets,
+                            null, null, null, null, null);
                         
                         dc.DrawGlyphRun(brush, glyphRun);
                         
@@ -207,7 +250,8 @@ namespace SnippetMasterWPF.Views.Pages
                 }
             }
         }
-private void RenderSelectionAndCaret(DrawingContext dc, PdfEditorViewModel vm, double pageHeight)
+        
+        private void RenderSelectionAndCaret(DrawingContext dc, PdfEditorViewModel vm, double pageHeight)
         {
             // Draw Selection
             if (vm.HasSelection && !vm.SelectionRectangle.IsEmpty)

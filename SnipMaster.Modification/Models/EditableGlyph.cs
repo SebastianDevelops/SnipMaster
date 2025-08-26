@@ -9,5 +9,6 @@ public record EditableGlyph(
     SimpleColor Color,
     PdfRectangle OriginalBoundingBox,
     bool IsBold,
-    bool IsItalic
+    bool IsItalic,
+    double AdvanceWidth
 );
