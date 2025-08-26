@@ -4,7 +4,6 @@
 
 [![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/)
 [![WPF](https://img.shields.io/badge/UI-WPF-purple.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
 
@@ -12,9 +11,8 @@
 
 **Stop settling for basic screenshot tools!** SnipMaster isn't just another screen capture app – it's a complete productivity powerhouse that revolutionizes how you capture, process, and manage visual content.
 
-### ⚡ What Makes Us Different?
+### ⚡ What Makes Snipmaster Different?
 
-- **🧠 AI-Powered OCR**: Extract text from any image with military-grade accuracy
 - **🎨 Universal File Conversion**: Transform between 10+ formats instantly
 - **📦 Smart Compression**: Reduce file sizes by up to 90% without quality loss
 - **📋 Intelligent Clipboard**: Never lose important snippets again
@@ -104,7 +102,7 @@ Transform files between formats like magic:
 ### 🎯 Your First Screenshot
 
 1. **Launch SnipMaster** - The app starts minimized in your system tray
-2. **Press `Ctrl+Shift+S`** - Activates the snipping tool
+2. **Press `Alt+Q`** - Activates the snipping tool
 3. **Select your area** - Click and drag to capture any screen region
 4. **Choose your action**:
    - 📋 **Copy to clipboard** (instant)
@@ -149,8 +147,6 @@ SnipMaster/
 ├── 🔄 SnipMaster.Conversion/     # File Conversion Engine
 ├── 📦 SnipMaster.Compression/    # Compression Services
 ├── 🌐 SnippetMaster.Api/         # REST API Server
-├── 🎯 SnipMaster.SyntaxBox/      # Syntax Highlighting
-└── 🧪 SnipmasterDemo/            # Demo Application
 ```
 
 ### 🔧 Key Technologies
@@ -166,11 +162,8 @@ SnipMaster/
 ## 🎮 Advanced Usage
 
 ### 🔥 Hotkeys & Shortcuts
-- `Ctrl+Shift+S` - Quick screenshot
-- `Ctrl+Shift+T` - OCR from clipboard
-- `Ctrl+Shift+H` - Show clipboard history
-- `Ctrl+Shift+C` - Quick compress
-- `F11` - Toggle fullscreen mode
+- `Alt+Q` - Quick Snip
+- `Ctrl+Shift+V` - Show clipboard history
 
 ### 🤖 API Integration
 
@@ -228,30 +221,14 @@ curl -X POST "http://localhost:5000/api/snippet/process" \
 dotnet --version  # Ensure .NET 8.0+
 
 # Clone and build
-git clone https://github.com/yourusername/SnipMaster.git
+git clone https://github.com/SebastianDevelops/SnipMaster.git
 cd SnipMaster
 dotnet restore
 dotnet build --configuration Release
 
-# Run tests
-dotnet test
-
 # Start the WPF app
 cd SnippetMasterWPF
 dotnet run
-```
-
-### 🧪 Testing
-
-```bash
-# Run all tests
-dotnet test
-
-# Run specific test project
-dotnet test SnipMaster.Tests/
-
-# Generate coverage report
-dotnet test --collect:"XPlat Code Coverage"
 ```
 
 ---
@@ -306,7 +283,7 @@ dotnet test --collect:"XPlat Code Coverage"
 ### 🆘 Need Help?
 - 📖 **Documentation**: [docs.snippetmaster.com](https://docs.snippetmaster.com)
 - 💬 **Discord Community**: [Join our server](https://discord.gg/snippetmaster)
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/SnipMaster/issues)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/SebastianDevelops/SnipMaster/issues)
 - 📧 **Email Support**: support@snippetmaster.com
 
 ### 🤝 Contributing
@@ -322,7 +299,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/SnipMaster&type=Date)](https://star-history.com/#yourusername/SnipMaster&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=SebastianDevelops/SnipMaster&type=Date)](https://star-history.com/#SebastianDevelops/SnipMaster&Date)
 
 ---
 
@@ -330,7 +307,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🚀 Ready to Transform Your Workflow?
 
-**[Download SnipMaster Now](https://github.com/yourusername/SnipMaster/releases/latest)**
+**[Download SnipMaster Now](https://github.com/SebastianDevelops/SnipMaster/releases/latest)**
 
 *Join thousands of users who've already revolutionized their productivity!*
 
@@ -338,6 +315,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ by Sebastian Van Rooyen**
 
-[⭐ Star this repo](https://github.com/yourusername/SnipMaster) • [🐛 Report Bug](https://github.com/yourusername/SnipMaster/issues) • [💡 Request Feature](https://github.com/yourusername/SnipMaster/issues)
+[⭐ Star this repo](https://github.com/SebastianDevelops/SnipMaster) • [🐛 Report Bug](https://github.com/SebastianDevelops/SnipMaster/issues) • [💡 Request Feature](https://github.com/SebastianDevelops/SnipMaster/issues)
 
 </div>
