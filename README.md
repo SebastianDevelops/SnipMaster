@@ -281,13 +281,8 @@ dotnet run
 ## 📞 Support & Community
 
 ### 🆘 Need Help?
-- 📖 **Documentation**: [docs.snippetmaster.com](https://docs.snippetmaster.com)
-- 💬 **Discord Community**: [Join our server](https://discord.gg/snippetmaster)
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/SebastianDevelops/SnipMaster/issues)
-- 📧 **Email Support**: support@snippetmaster.com
-
-### 🤝 Contributing
-We love contributions! Check out our [Contributing Guide](CONTRIBUTING.md) to get started.
+- 📧 **Email Support**: sebastiandevelops@gmail.com
 
 ---
 
@@ -307,9 +302,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🚀 Ready to Transform Your Workflow?
 
-**[Download SnipMaster Now](https://github.com/SebastianDevelops/SnipMaster/releases/latest)**
+**[Download SnipMaster Now]([https://github.com/SebastianDevelops/SnipMaster/releases/latest](https://sebastiandevelops.github.io/SnipMaster/SnippetMasterWPF.application))**
 
-*Join thousands of users who've already revolutionized their productivity!*
+*Join hundreds of users who've already revolutionized their productivity!*
 
 ---
 
