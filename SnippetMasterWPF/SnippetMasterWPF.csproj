@@ -33,7 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
     <PackageReference Include="Syncfusion.Licensing" Version="30.2.7" />
-    <PackageReference Include="Syncfusion.PDF.OCR.NET" Version="30.2.7" />
+    <PackageReference Include="Syncfusion.Pdf.OCR.Wpf" Version="30.2.7" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
     <PackageReference Include="WPF-UI" Version="3.0.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0 " />
@@ -45,31 +45,53 @@
   <ItemGroup>
     <None Remove="Assets\wpfui-icon-256.png" />
     <None Remove="Assets\wpfui-icon-1024.png" />
-    <None Remove="Services\tessdata\eng.traineddata" />
-    <None Remove="Services\tessdata\pdf.ttf" />
+    <None Remove="Services\Tessdata\eng.traineddata" />
+    <None Remove="Services\Tessdata\pdf.ttf" />
     <None Remove="snippet-master-icon.ico" />
+    <None Include="Services\Tessdata\eng.traineddata" />
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="Services\tessdata\**\*">
+    <Content Include="Services\Tessdata\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Link>Tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <IncludeInClickOnce>true</IncludeInClickOnce>
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Tesseractbinaries\**\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>Tesseractbinaries\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
+  </ItemGroup>
+
+  <!-- Copy Tesseract binaries to runtime-specific locations -->
+  <ItemGroup>
+    <Content Include="Tesseractbinaries\Windows\win-x64\*.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>runtimes\win-x64\native\%(Filename)%(Extension)</Link>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
+    <Content Include="Tesseractbinaries\Windows\win-x86\*.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>runtimes\win-x86\native\%(Filename)%(Extension)</Link>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Assets\wpfui-icon-256.png" />
     <Resource Include="Assets\wpfui-icon-1024.png" />
-    <Resource Include="Services\tessdata\eng.traineddata">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ffmpeg\" />
     <Folder Include="images\" />
+    <Folder Include="Tessdata\" />
+    <Folder Include="Tesseractbinaries\Windows\win-x64\" />
+    <Folder Include="Tesseractbinaries\Windows\win-x86\" />
   </ItemGroup>
 
   <ItemGroup>

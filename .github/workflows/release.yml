@@ -20,4 +20,6 @@ jobs:
 
       - name: Run release script
         shell: pwsh
+        env:
+          SYNCFUSION_LICENSE_KEY: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
         run: ./release.ps1

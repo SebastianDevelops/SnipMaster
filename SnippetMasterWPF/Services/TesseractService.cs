@@ -1,50 +1,73 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.IO;
 using System.Windows.Media.Imaging;
-using Tesseract;
+using SnippetMasterWPF.Helpers;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.OCRProcessor;
+using Syncfusion.Pdf.Graphics;
+using System.Drawing;
 
 namespace SnippetMasterWPF.Services
 {
     public class TesseractService : ITesseractService
     {
+        public TesseractService()
+        {
+            var licenseKey = Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY") 
+                           ?? ConfigurationManager.AppSettings["SyncfusionLicenseKey"];
+            
+            if (!string.IsNullOrEmpty(licenseKey))
+            {
+                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+            }
+        }
+        
         public string ReadFromUploadedFile(string filePath)
         {
-            using (var ocrEngine = new TesseractEngine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata"), "eng", EngineMode.Default))
+            using (var processor = new OCRProcessor())
+            using (var bitmap = new Bitmap(filePath))
             {
-                var file = Pix.LoadFromFile(filePath);
-                
-                var result = ocrEngine.Process(file);
+                processor.Settings.Language = Languages.English;
+                string text = processor.PerformOCR(bitmap, @"tessdata/").ToString();
 
-                if (result is null)
+                if (String.IsNullOrEmpty(text))
                 {
                     MessageBox.Show("Something went wrong while reading the file");
                 }
 
-                return result!.GetText();
+                return text;
             }
         }
 
-
         public string ReadFromSnippedImage(BitmapImage image)
         {
-            using (var memoryStream = new MemoryStream())
+            var tempFile = Path.GetTempFileName();
+            try
             {
-                BitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(image));
-                encoder.Save(memoryStream);
-                memoryStream.Position = 0;
-
-                using (var ocrEngine = new TesseractEngine(@".\tessdata", "eng", EngineMode.Default))
+                using (var fileStream = new FileStream(tempFile, FileMode.Create))
                 {
-                    var pix = Pix.LoadFromMemory(memoryStream.ToArray());
-                    var result = ocrEngine.Process(pix);
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(image));
+                    encoder.Save(fileStream);
+                }
+                
+                using (var bitmap = new Bitmap(tempFile))
+                using (var processor = new OCRProcessor())
+                {
+                    processor.Settings.Language = Languages.English;
+                    string ocrText = processor.PerformOCR(bitmap, @"tessdata/").ToString();
 
-                    if (result is null)
+                    if (String.IsNullOrEmpty(ocrText))
                     {
                         MessageBox.Show("Something went wrong while reading the image");
                     }
-
-                    return result!.GetText();
+                    
+                    return ocrText;
                 }
+            }
+            finally
+            {
+                File.Delete(tempFile);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Net.Mime;
 using SnippetMasterWPF.Services;
 using System.Windows.Forms;
@@ -61,6 +62,8 @@ namespace SnippetMasterWPF.ViewModels.Pages
             }
         }
 
+        public ObservableCollection<GalleryItem> ScreenshotHistory { get; } = new();
+
 
 
         public DashboardViewModel(ITesseractService tesseractService, 
@@ -82,6 +85,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
             _snippingService.OnSnipCompleted += OnSnipCompleted;
             _hotKeyService.RegisterHotkeys(StartSnipping);
             _selectedLanguage = Languages.FirstOrDefault(l => l.Language == EditorLanguage.Markdown) ?? Languages[0];
+            LoadScreenshotHistory();
         }
         
         public void SetWebView(WebView2 webView)
@@ -132,6 +136,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 		public ICommand SnipImageCommand => new RelayCommand(StartSnipping);
         public ICommand CopySnippetCommand => new RelayCommand(CopySnippet, CanCopySnippet);
         public ICommand GenerateScreenshotCommand => new RelayCommand(GenerateScreenshot, CanGenerateScreenshot);
+        public ICommand OpenFileCommand => new Infrastructure.Mvvm.RelayCommand<string>(OpenFile);
 
         //methods
         public void UploadFile()
@@ -196,6 +201,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 
                 var filePath = await _screenshotService.GenerateScreenshotAsync(content, SelectedLanguage.Language, "SnipMaster");
                 _notificationService.ShowNotification("SnipMaster", $"Screenshot saved to {Path.GetFileName(filePath)}");
+                LoadScreenshotHistory();
             }
             catch (Exception ex)
             {
@@ -291,6 +297,50 @@ namespace SnippetMasterWPF.ViewModels.Pages
             }
         }
         
+
+        private void LoadScreenshotHistory()
+        {
+            ScreenshotHistory.Clear();
+            var files = _screenshotService.GetGeneratedScreenshots();
+            foreach (var file in files.Take(10))
+            {
+                try
+                {
+                    ScreenshotHistory.Add(new GalleryItem
+                    {
+                        FilePath = file,
+                        FileName = Path.GetFileName(file),
+                        CreatedDate = File.GetCreationTime(file),
+                        Thumbnail = LoadThumbnail(file)
+                    });
+                }
+                catch { }
+            }
+        }
+
+        private BitmapImage LoadThumbnail(string filePath)
+        {
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(filePath);
+            bitmap.DecodePixelWidth = 60;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
+        }
+
+        private void OpenFile(string? filePath)
+        {
+            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = filePath,
+                    UseShellExecute = true
+                });
+            }
+        }
 
         private static DispatcherOperation<TResult> DispatchAsync<TResult>(Func<TResult> callback)
         {

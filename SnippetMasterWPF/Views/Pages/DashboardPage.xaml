@@ -29,6 +29,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="200" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -111,6 +112,48 @@
             Margin="0,10,0,0"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
+            <Button
+                Margin="5"
+                Command="{Binding ViewModel.CopySnippetCommand}"
+                Content="Copy Text" />
+            <Button
+                Margin="5"
+                Command="{Binding ViewModel.GenerateScreenshotCommand}"
+                Content="Generate Screenshot" />
         </StackPanel>
+
+        <ui:CardExpander
+            Grid.Row="4"
+            Header="Generated Screenshots"
+            Margin="0,10,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="180">
+                <ItemsControl ItemsSource="{Binding ViewModel.ScreenshotHistory}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:CardControl Margin="0,2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Border Grid.Column="0" Margin="0,0,200,0" Width="60" Height="40">
+                                        <Image Source="{Binding Thumbnail}" Stretch="None" />
+                                    </Border>
+                                    
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,50,0">
+                                        <TextBlock Text="{Binding FileName}" FontWeight="Medium" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{Binding CreatedDate, StringFormat='{}{0:MM/dd/yyyy HH:mm}'}" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                                    </StackPanel>
+                                    
+                                    <ui:Button Grid.Column="2" Content="Open" Margin="0,0,1000,0" Command="{Binding DataContext.ViewModel.OpenFileCommand, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding FilePath}" Appearance="Secondary" />
+                                </Grid>
+                            </ui:CardControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </ui:CardExpander>
     </Grid>
 </Page>
