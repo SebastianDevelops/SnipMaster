@@ -67,6 +67,26 @@ public class EditorController
         _ = await _webView.ExecuteScriptAsync(EditorObject + $".setValue(\"{literalContents}\");");
     }
 
+    public async Task<string> GetContentAsync()
+    {
+        var result = await _webView.ExecuteScriptAsync(EditorObject + ".getValue();");
+        if (string.IsNullOrEmpty(result)) return string.Empty;
+        
+        // Parse JSON string to properly handle escapes
+        try
+        {
+            var content = System.Text.Json.JsonSerializer.Deserialize<string>(result);
+            return content ?? string.Empty;
+        }
+        catch
+        {
+            // Fallback: manual unescaping
+            var content = result.Trim('"');
+            content = System.Text.RegularExpressions.Regex.Unescape(content);
+            return content;
+        }
+    }
+
     public void DispatchScript(string script)
     {
         if (_webView == null)

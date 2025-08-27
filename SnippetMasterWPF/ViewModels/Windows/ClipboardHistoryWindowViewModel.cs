@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using TextCopy;
 
 namespace SnippetMasterWPF.ViewModels.Windows;
-
+// TODO: Implement select functionality when deleting
 public partial class ClipboardHistoryWindowViewModel : ObservableObject
 {
     private readonly IClipboardService _clipboardService;

@@ -48,6 +48,7 @@ namespace SnippetMasterWPF
                 services.AddSingleton<IHotKeyService, HotKeyService>();
                 services.AddTransient<ITesseractService, TesseractService>();
                 services.AddTransient<ISnippingService, SnippingService>();
+                services.AddSingleton<IScreenshotGeneratorService, ScreenshotGeneratorService>();
                 services.AddHttpClient();
                 services.AddTransient<IApiClient, ApiClient>();
                 services.AddSingleton<ISnackbarService, SnackbarService>();
