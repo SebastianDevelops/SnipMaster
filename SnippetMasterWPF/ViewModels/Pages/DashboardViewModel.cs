@@ -145,7 +145,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
                 {
                     string fileName = open.FileName;
 
-                    string fileText = _ocrService.ReadFromUploadedFile(fileName, Enums.DocumentType.Code);
+                    string fileText = _tesseractService.ReadFromUploadedFile(fileName);
 
                     if (!string.IsNullOrEmpty(fileText))
                         SnippetText = fileText;
