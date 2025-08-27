@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.IO;
+using System.Net.Mime;
 using SnippetMasterWPF.Services;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
@@ -8,6 +9,7 @@ using RelayCommand = SnippetMasterWPF.Infrastructure.Mvvm.RelayCommand;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Web.WebView2.Wpf;
+using SnippetMasterWPF.Infrastructure;
 using SnippetMasterWPF.Infrastructure.Editor;
 using SnippetMasterWPF.Models.Editor;
 using Wpf.Ui;
@@ -23,6 +25,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
         private readonly IContentDialogService _contentDialogService;
         private readonly IApiClient _apiClient;
         private readonly INotificationService _notificationService;
+        private readonly IScreenshotGeneratorService _screenshotService;
         private EditorController? _editorController;
 
         public class LanguageItem
@@ -65,7 +68,8 @@ namespace SnippetMasterWPF.ViewModels.Pages
                                   IHotKeyService hotKeyService,
                                   IContentDialogService contentDialogService,
                                   IApiClient apiClient,
-                                  INotificationService notificationService)
+                                  INotificationService notificationService,
+                                  IScreenshotGeneratorService screenshotService)
         {
 			_tesseractService = tesseractService ?? throw new NullReferenceException();
             _snippingService = snippingService ?? throw new NullReferenceException();
@@ -73,10 +77,11 @@ namespace SnippetMasterWPF.ViewModels.Pages
             _contentDialogService = contentDialogService ?? throw new NullReferenceException();
             _apiClient = apiClient ?? throw new NullReferenceException();
             _notificationService = notificationService ?? throw new NullReferenceException();
+            _screenshotService = screenshotService ?? throw new NullReferenceException();
 
             _snippingService.OnSnipCompleted += OnSnipCompleted;
             _hotKeyService.RegisterHotkeys(StartSnipping);
-            _selectedLanguage = Languages[0];
+            _selectedLanguage = Languages.FirstOrDefault(l => l.Language == EditorLanguage.Markdown) ?? Languages[0];
         }
         
         public void SetWebView(WebView2 webView)
@@ -126,6 +131,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 		public ICommand UploadFileCommand => new RelayCommand(UploadFile);
 		public ICommand SnipImageCommand => new RelayCommand(StartSnipping);
         public ICommand CopySnippetCommand => new RelayCommand(CopySnippet, CanCopySnippet);
+        public ICommand GenerateScreenshotCommand => new RelayCommand(GenerateScreenshot, CanGenerateScreenshot);
 
         //methods
         public void UploadFile()
@@ -139,7 +145,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
                 {
                     string fileName = open.FileName;
 
-                    string fileText = _tesseractService.ReadFromUploadedFile(fileName);
+                    string fileText = _ocrService.ReadFromUploadedFile(fileName, Enums.DocumentType.Code);
 
                     if (!string.IsNullOrEmpty(fileText))
                         SnippetText = fileText;
@@ -173,6 +179,37 @@ namespace SnippetMasterWPF.ViewModels.Pages
         private bool CanCopySnippet()
         {
             return !string.IsNullOrEmpty(SnippetText);
+        }
+
+        private async void GenerateScreenshot()
+        {
+            try
+            {
+                IsProcessing = true;
+                var content = await _editorController?.GetContentAsync() ?? SnippetText;
+                
+                if (string.IsNullOrEmpty(content))
+                {
+                    MessageBox.Show("No content to generate screenshot from.", "Info");
+                    return;
+                }
+
+                var filePath = await _screenshotService.GenerateScreenshotAsync(content, SelectedLanguage.Language, "SnipMaster");
+                _notificationService.ShowNotification("SnipMaster", $"Screenshot saved to {Path.GetFileName(filePath)}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to generate screenshot: {ex.Message}", "Error");
+            }
+            finally
+            {
+                IsProcessing = false;
+            }
+        }
+
+        private bool CanGenerateScreenshot()
+        {
+            return !string.IsNullOrEmpty(SnippetText) && !IsProcessing;
         }
 
 		private void OnSnipCompleted(BitmapImage snippedImage)
@@ -222,7 +259,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 
 	        await _editorController.CreateAsync();
 	        await _editorController.SetThemeAsync(ApplicationThemeManager.GetAppTheme());
-	        await _editorController.SetLanguageAsync(EditorLanguage.Csharp);
+	        await _editorController.SetLanguageAsync(EditorLanguage.Markdown);
 	        await _editorController.SetContentAsync("");
         }
 		
