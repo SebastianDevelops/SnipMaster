@@ -1,74 +1,54 @@
-# 🚀 SnipMaster - The Ultimate Screenshot & Productivity Suite
+# 🚀 SnipMaster AI - The Ultimate Productivity Suite
 
-> **Transform your workflow with the most powerful screenshot tool ever built!**
+> **Go from screen grab to insight in seconds.** SnipMaster is a powerhouse desktop suite for Windows that supercharges your workflow, now with an upcoming AI Document Editor.
 
 [![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/)
 [![WPF](https://img.shields.io/badge/UI-WPF-purple.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
+[![Website](https://img.shields.io/badge/Website-snipmaster.fun-brightgreen)](https://snipmaster.fun)
+[![AI Editor](https://img.shields.io/badge/AI_Editor-Coming_Soon-blueviolet)](https://snipmaster.fun)
 
 ---
 
-## 🎯 Why SnipMaster?
+## 🎯 What is SnipMaster?
 
-**Stop settling for basic screenshot tools!** SnipMaster isn't just another screen capture app – it's a complete productivity powerhouse that revolutionizes how you capture, process, and manage visual content.
+SnipMaster is a complete productivity ecosystem built on one simple idea: capturing and understanding information should be seamless.
 
-### ⚡ What Makes Snipmaster Different?
+1.  **SnipMaster Desktop (100% Free & Open-Source):** A powerful Windows tool that combines screen-to-text (OCR), file conversion, smart compression, and an intelligent clipboard into one lightning-fast app.
+2.  **SnipMaster AI Editor (Premium Upgrade):** An upcoming web-based AI assistant. Instantly send text from your screen grabs to the AI to summarize, analyze, rewrite, and edit your documents.
 
-- **🎨 Universal File Conversion**: Transform between 10+ formats instantly
-- **📦 Smart Compression**: Reduce file sizes by up to 90% without quality loss
-- **📋 Intelligent Clipboard**: Never lose important snippets again
-- **🔥 Lightning Fast**: Capture and process in milliseconds
-- **🎯 Developer-Friendly**: Full API access for automation
+### 🧠 Announcing the SnipMaster AI Editor
+
+> The AI Editor is the next evolution of your productivity. For a **single $10 one-time purchase**, you'll get a massive pack of AI credits to supercharge your workflow. **No subscriptions, no hidden fees.**
+>
+> **[Visit snipmaster.un to get notified when it launches!](https://snipmaster.fun)**
 
 ---
 
-## 🌟 Core Features That Will Blow Your Mind
+## 🌟 The Free Desktop Powerhouse: Core Features
 
-### 📸 **Advanced Screen Capture**
-- **Precision Selection**: Pixel-perfect rectangular selections
-- **Instant Preview**: See your capture before saving
-- **Multiple Formats**: PNG, JPG, WebP, and more
-- **Hotkey Support**: Global shortcuts for lightning-fast captures
-
-### 🔍 **OCR Text Recognition**
-- **Tesseract Engine**: Industry-leading text extraction
-- **Multi-Language Support**: Extract text in dozens of languages  
-- **Smart Processing**: Handles complex layouts and fonts
-- **Instant Results**: Text ready in your clipboard immediately
+### 🔍 **Instant Screen-to-Text (OCR)**
+- Turn any image, screenshot, or PDF into editable text with 98.5% accuracy.
+- Global hotkeys (`Alt+Q`) for lightning-fast captures.
+- Multi-language support for global workflows.
 
 ### 🔄 **Universal File Conversion**
-Transform files between formats like magic:
-
-**Image Formats:**
-- PNG ↔ JPG ↔ WebP ↔ BMP ↔ GIF ↔ TIFF ↔ SVG ↔ PDF
-- HEIC ↔ JFIF support for mobile photos
-
-**Document Formats:**
-- PDF ↔ Word ↔ Excel ↔ PowerPoint
-- Text ↔ Markdown ↔ HTML
+- Convert between 10+ formats for images, documents, and media.
+- Drag & drop interface for incredible ease of use.
+- Supports PDF, Word, JPG, PNG, WebP, and many more.
 
 ### 📦 **Intelligent Compression**
-- **Zstandard Algorithm**: Next-gen compression technology
-- **GZip & Deflate**: Classic compression options
-- **Media Compression**: Video and audio optimization with FFmpeg
-- **Batch Processing**: Compress hundreds of files at once
+- Shrink file sizes by up to 90% with zero quality loss.
+- Uses next-gen algorithms like Zstandard for maximum efficiency.
+- Perfect for optimizing email attachments and cloud storage.
 
 ### 📋 **Smart Clipboard Manager**
-- **Persistent History**: Never lose copied content again
-- **Rich Content Support**: Text, images, files, and more
-- **Search & Filter**: Find any clipboard item instantly
-- **Sync Across Sessions**: History survives app restarts
+- Never lose copied content again with a persistent, searchable history.
+- Supports text, images, and files across sessions.
+- `Ctrl+Shift+V` to access your history instantly.
 
-### 🎨 **Syntax Highlighting**
-- **Monaco Editor Integration**: VS Code-quality editing
-- **50+ Languages**: From Python to Assembly
-- **Custom Themes**: Dark, light, and custom color schemes
-- **Real-time Processing**: Instant syntax recognition
-
-### 🌐 **REST API**
-- **Text Processing Endpoint**: `/api/snippet/process`
-- **Automation Ready**: Integrate with any workflow
-- **JSON Responses**: Clean, structured data
-- **Scalable Architecture**: Handle thousands of requests
+### 🎨 **Developer & Creator Tools**
+- VS Code-quality syntax highlighting for 50+ languages.
+- A built-in REST API for automating your workflows.
 
 ---
 
@@ -77,71 +57,63 @@ Transform files between formats like magic:
 ### Prerequisites
 - Windows 10/11
 - .NET 8.0 Runtime
-- 4GB RAM (8GB recommended)
 
 ### Installation
+The easiest way to install is to **[Download the latest release here](https://sebastiandevelops.github.io/SnipMaster/SnippetMasterWPF.application)**. The application will handle updates automatically.
 
-1. **Download the latest release**
-   ```bash
-   # Clone the repository
-   git clone https://github.com/yourusername/SnipMaster.git
-   cd SnipMaster
-   ```
+### 🎯 Your First Screengrab
 
-2. **Build the solution**
-   ```bash
-   dotnet build SnipMaster.sln --configuration Release
-   ```
-
-3. **Run the application**
-   ```bash
-   cd SnippetMasterWPF/bin/Release/net8.0-windows
-   ./SnippetMasterWPF.exe
-   ```
-
-### 🎯 Your First Screenshot
-
-1. **Launch SnipMaster** - The app starts minimized in your system tray
-2. **Press `Alt+Q`** - Activates the snipping tool
-3. **Select your area** - Click and drag to capture any screen region
-4. **Choose your action**:
-   - 📋 **Copy to clipboard** (instant)
-   - 💾 **Save to file** (PNG, JPG, WebP)
-   - 🔍 **Extract text** (OCR magic)
-   - 🔄 **Convert format** (one-click transformation)
-
-### 🔍 OCR Text Extraction
-
-1. **Capture or load an image** with text
-2. **Click "Extract Text"** in the main interface
-3. **Watch the magic happen** - Text appears in seconds
-4. **Copy, edit, or save** the extracted content
-
-### 🔄 File Conversion Made Easy
-
-1. **Drag & drop** any supported file into SnipMaster
-2. **Select target format** from the dropdown
-3. **Click "Convert"** - Processing happens instantly
-4. **Download your converted file** - Perfect quality guaranteed
-
-### 📦 Smart Compression
-
-1. **Load your file** (document, image, or media)
-2. **Choose compression type**:
-   - **Zstandard** (best ratio)
-   - **GZip** (universal compatibility)
-   - **Media** (video/audio optimization)
-3. **Hit "Compress"** - Watch file sizes shrink dramatically
-4. **Compare results** - See exact size savings
+1.  **Launch SnipMaster** (it lives in your system tray).
+2.  Press **`Alt+Q`** to activate the snipping tool.
+3.  **Select any area** on your screen.
+4.  **Choose your action**: Copy text, save as an image, and soon, **"Analyze with AI"**.
 
 ---
 
-## 🏗️ Architecture Overview
+## 🎯 Use Cases & Success Stories
+
+### 👨‍💻 **Developers**
+- Extract code from screenshots instantly & send to the AI Editor to find bugs or add comments.
+- Convert documentation between formats.
+- Compress build artifacts automatically.
+
+### 📚 **Students & Researchers**
+- Grab text from textbooks and research papers to be summarized by the AI.
+- Convert lecture slides into study notes.
+- Organize screenshot libraries for citations.
+
+### 💼 **Business Professionals**
+- Process invoices and receipts with OCR.
+- Convert presentations and reports to different formats.
+- Use the AI Editor to draft professional emails from rough notes.
+
+### 🎨 **Content Creators**
+- Optimize images and media for the web with smart compression.
+- Extract text from graphics for social media posts.
+- Batch process entire libraries of content.
+
+---
+
+## 🔮 Roadmap: The AI-Powered Future
+
+Our immediate focus is launching the **SnipMaster AI Editor**. After that, our vision includes:
+
+- [ ] **Cloud Sync:** Access your captures and history anywhere.
+- [ ] **Team Collaboration:** Share and annotate with colleagues.
+- [ ] **Plugin System:** Extend SnipMaster with community-built tools.
+- [ ] **Enhanced AI:** Smart image upscaling, document layout analysis, and more.
+
+---
+
+## 🛠️ For Developers & Contributors
+
+This section contains all the technical details for those who want to contribute or understand the architecture.
+
+### 🏗️ Architecture Overview
 
 SnipMaster is built with a modular, scalable architecture:
 
-```
-SnipMaster/
+```SnipMaster/
 ├── 🎨 SnippetMasterWPF/          # Main WPF Application
 ├── 📚 SnipMasterLib/             # Core Screenshot Library
 ├── 🔄 SnipMaster.Conversion/     # File Conversion Engine
@@ -157,62 +129,19 @@ SnipMaster/
 - **Monaco Editor**: VS Code editing experience
 - **ASP.NET Core**: Robust API framework
 
----
+### 🎮 Advanced Usage
 
-## 🎮 Advanced Usage
-
-### 🔥 Hotkeys & Shortcuts
+#### 🔥 Hotkeys & Shortcuts
 - `Alt+Q` - Quick Snip
 - `Ctrl+Shift+V` - Show clipboard history
 
-### 🤖 API Integration
-
-**Process text snippets programmatically:**
-
+#### 🤖 API Integration
+Process text snippets programmatically:
 ```bash
 curl -X POST "http://localhost:5000/api/snippet/process" \
   -H "Content-Type: application/json" \
   -d '{"text": "Your text here"}'
 ```
-
-**Response:**
-```json
-{
-  "success": true,
-  "message": "Snippet processed successfully",
-  "processedText": "Formatted and enhanced text"
-}
-```
-
-### 🎨 Customization
-
-**Theme Configuration:**
-- Navigate to Settings → Appearance
-- Choose from 10+ built-in themes
-- Create custom color schemes
-- Adjust font sizes and families
-
-**Hotkey Customization:**
-- Settings → Hotkeys
-- Assign any key combination
-- Global or application-specific
-- Conflict detection included
-
----
-
-## 📊 Performance Benchmarks
-
-| Feature | Speed | Accuracy | File Size Reduction |
-|---------|-------|----------|-------------------|
-| Screenshot Capture | < 100ms | 100% | N/A |
-| OCR Processing | < 2s | 98.5% | N/A |
-| Image Conversion | < 500ms | Lossless | Up to 60% |
-| File Compression | < 1s | 100% | Up to 90% |
-| API Response | < 50ms | 100% | N/A |
-
----
-
-## 🛠️ Development & Contributing
 
 ### Building from Source
 
@@ -231,50 +160,15 @@ cd SnippetMasterWPF
 dotnet run
 ```
 
----
+### 📊 Performance Benchmarks
 
-## 🎯 Use Cases & Success Stories
-
-### 👨‍💻 **Developers**
-- Extract code from screenshots instantly
-- Convert documentation between formats
-- Compress build artifacts automatically
-- API integration for CI/CD pipelines
-
-### 📚 **Students & Researchers**
-- OCR textbooks and research papers
-- Convert between document formats
-- Organize screenshot libraries
-- Extract text from lecture slides
-
-### 💼 **Business Professionals**
-- Process invoices and receipts
-- Convert presentations to different formats
-- Compress large file attachments
-- Automate document workflows
-
-### 🎨 **Content Creators**
-- Optimize images for web
-- Extract text from graphics
-- Convert between media formats
-- Batch process content libraries
-
----
-
-## 🔮 Roadmap
-
-### 🚀 Coming Soon
-- [ ] **Cloud Sync** - Access your captures anywhere
-- [ ] **Mobile Apps** - iOS and Android companions
-- [ ] **Team Collaboration** - Share and annotate together
-- [ ] **AI Enhancement** - Smart image upscaling
-- [ ] **Plugin System** - Extend functionality infinitely
-
-### 💡 Future Vision
-- **Machine Learning OCR** - Even better text recognition
-- **Real-time Collaboration** - Live editing and sharing
-- **Advanced Analytics** - Usage insights and optimization
-- **Enterprise Features** - SSO, audit logs, compliance
+| Feature | Speed | Accuracy | File Size Reduction |
+|---------|-------|----------|-------------------|
+| Screen Capture | < 100ms | 100% | N/A |
+| OCR Processing | < 2s | 98.5% | N/A |
+| Image Conversion | < 500ms | Lossless | Up to 60% |
+| File Compression | < 1s | 100% | Up to 90% |
+| API Response | < 50ms | 100% | N/A |
 
 ---
 
@@ -302,9 +196,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🚀 Ready to Transform Your Workflow?
 
-**[Download SnipMaster Now]([https://github.com/SebastianDevelops/SnipMaster/releases/latest](https://sebastiandevelops.github.io/SnipMaster/SnippetMasterWPF.application))**
+**1. [Download the FREE Desktop App](https://sebastiandevelops.github.io/SnipMaster/SnippetMasterWPF.application)**
+<br/>
+**2. [Sign Up for the AI Editor Launch!](https://snipmaster.fun)**
 
-*Join hundreds of users who've already revolutionized their productivity!*
+*Join thousands of users who are revolutionizing their productivity!*
 
 ---
 
