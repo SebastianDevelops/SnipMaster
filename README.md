@@ -4,8 +4,8 @@
 
 [![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/)
 [![WPF](https://img.shields.io/badge/UI-WPF-purple.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
-[![Website](https://img.shields.io/badge/Website-snipmaster.un-brightgreen)](https://snipmaster.un)
-[![AI Editor](https://img.shields.io/badge/AI_Editor-Coming_Soon-blueviolet)](https://snipmaster.un)
+[![Website](https://img.shields.io/badge/Website-snipmaster.un-brightgreen)](https://snipmaster.fun)
+[![AI Editor](https://img.shields.io/badge/AI_Editor-Coming_Soon-blueviolet)](https://snipmaster.fun)
 
 ---
 
