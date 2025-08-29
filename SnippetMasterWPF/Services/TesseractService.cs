@@ -41,17 +41,14 @@ namespace SnippetMasterWPF.Services
 
         public string ReadFromSnippedImage(BitmapImage image)
         {
-            var tempFile = Path.GetTempFileName();
-            try
+            using (var memoryStream = new MemoryStream())
             {
-                using (var fileStream = new FileStream(tempFile, FileMode.Create))
-                {
-                    BitmapEncoder encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(image));
-                    encoder.Save(fileStream);
-                }
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(image));
+                encoder.Save(memoryStream);
+                memoryStream.Position = 0;
                 
-                using (var bitmap = new Bitmap(tempFile))
+                using (var bitmap = new Bitmap(memoryStream))
                 using (var processor = new OCRProcessor())
                 {
                     processor.Settings.Language = Languages.English;
@@ -64,10 +61,6 @@ namespace SnippetMasterWPF.Services
                     
                     return ocrText;
                 }
-            }
-            finally
-            {
-                File.Delete(tempFile);
             }
         }
     }

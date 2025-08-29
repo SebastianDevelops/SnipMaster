@@ -15,6 +15,7 @@ using SnippetMasterWPF.Infrastructure.Editor;
 using SnippetMasterWPF.Models.Editor;
 using Wpf.Ui;
 using Wpf.Ui.Appearance;
+using Application = System.Windows.Application;
 
 namespace SnippetMasterWPF.ViewModels.Pages
 {
@@ -200,7 +201,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
                 }
 
                 var filePath = await _screenshotService.GenerateScreenshotAsync(content, SelectedLanguage.Language, "SnipMaster");
-                _notificationService.ShowNotification("SnipMaster", $"Screenshot saved to {Path.GetFileName(filePath)}");
+                _notificationService.ShowSuccess("Screenshot Generated", $"Saved to {Path.GetFileName(filePath)}");
                 LoadScreenshotHistory();
             }
             catch (Exception ex)
@@ -238,7 +239,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
                     try
                     {
                         Clipboard.SetDataObject(snippetText);
-                        _notificationService.ShowNotification("SnipMaster", "Text copied to clipboard successfully!");
+                        _notificationService.ShowSuccess("Text Copied", "OCR text copied to clipboard!");
                     }
                     catch
                     {
@@ -279,22 +280,22 @@ namespace SnippetMasterWPF.ViewModels.Pages
         
         private async Task ProcessAndUpdateEditorAsync(string originalText)
         {
-            IsProcessing = true;
-            
-            try
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                var processedText = await _apiClient.ProcessSnippetAsync(originalText);
-                await _editorController?.SetContentAsync(processedText);
-            }
-            catch
-            {
-                // Fallback to original text if API fails
-                await _editorController?.SetContentAsync(originalText);
-            }
-            finally
-            {
-                IsProcessing = false;
-            }
+                IsProcessing = true;
+                
+                try
+                {
+                    if (_editorController != null)
+                    {
+                        await _editorController.SetContentAsync(originalText);
+                    }
+                }
+                finally
+                {
+                    IsProcessing = false;
+                }
+            });
         }
         
 
