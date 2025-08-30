@@ -82,6 +82,8 @@ namespace SnippetMasterWPF
                 services.AddSingleton<MediaCompressionViewModel>();
                 services.AddSingleton<FileConversionPage>();
                 services.AddSingleton<FileConversionViewModel>();
+                services.AddSingleton<PdfEditorAiPage>();
+                services.AddSingleton<PdfEditorAiViewModel>();
                 services.AddTransient<ClipboardHistoryWindow>();
                 services.AddTransient<ClipboardHistoryWindowViewModel>();
             }).Build();

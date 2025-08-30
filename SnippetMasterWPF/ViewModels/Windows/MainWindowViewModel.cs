@@ -52,6 +52,12 @@ namespace SnippetMasterWPF.ViewModels.Windows
                 Content = "File Conversion",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowSwap24 },
                 TargetPageType = typeof(Views.Pages.FileConversionPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "PDF Editor AI ⭐",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.BrainCircuit24 },
+                TargetPageType = typeof(Views.Pages.PdfEditorAiPage)
             }
         };
 

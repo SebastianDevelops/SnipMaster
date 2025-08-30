@@ -1,0 +1,130 @@
+<Page
+    x:Class="SnippetMasterWPF.Views.Pages.PdfEditorAiPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SnippetMasterWPF.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="PdfEditorAiPage"
+    d:DataContext="{d:DesignInstance local:PdfEditorAiPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+    
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Page.Resources>
+
+    <Grid>
+        <!-- Golden glass background -->
+        <Border CornerRadius="12" Margin="20">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#40FFD700" Offset="0"/>
+                    <GradientStop Color="#60FFA500" Offset="0.5"/>
+                    <GradientStop Color="#40FF8C00" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Effect>
+                <BlurEffect Radius="20"/>
+            </Border.Effect>
+        </Border>
+        
+        <!-- Glass overlay -->
+        <Border CornerRadius="12" Margin="20" Background="#20FFFFFF">
+            <Border.Effect>
+                <DropShadowEffect Color="Gold" BlurRadius="15" ShadowDepth="0" Opacity="0.3"/>
+            </Border.Effect>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="60,40" MaxWidth="600" HorizontalAlignment="Center">
+                
+                <!-- Headline -->
+                <TextBlock FontSize="32" FontWeight="Bold" TextAlignment="Center" 
+                           Margin="0,0,0,30" TextWrapping="Wrap">
+                    <Run Text="🧠"/> 
+                    <Run Text="Unlock Document Intelligence"/>
+                </TextBlock>
+
+                <!-- Body Text -->
+                <TextBlock FontSize="16" LineHeight="24" TextAlignment="Left" 
+                           Margin="0,0,0,40" TextWrapping="Wrap" Opacity="0.9">
+                    <Run Text="Thank you for using SnipMaster! We're excited to announce a powerful new upgrade that will revolutionize your workflow."/>
+                    <LineBreak/><LineBreak/>
+                    <Run Text="Soon, you'll be able to send document directly to our AI Editor to:"/>
+                    <LineBreak/><LineBreak/>
+                    <Run Text="• Instantly summarize dense articles and reports."/>
+                    <LineBreak/>
+                    <Run Text="• Rewrite sentences to your standard."/>
+                    <LineBreak/>
+                    <Run Text="• Fix all grammar and spelling mistakes automatically."/>
+                    <LineBreak/><LineBreak/>
+                    <Run Text="• Analyze complex documents."/>
+                    <LineBreak/><LineBreak/>
+                    <Run Text="It will be a simple $10 one-time purchase—no subscriptions."/>
+                    <LineBreak/><LineBreak/>
+                    <Run Text="Click below to be the first to know when it's available (and maybe get a launch discount!)."/>
+                </TextBlock>
+
+                <!-- Email Input -->
+                <ui:TextBox PlaceholderText="Enter your email address"
+                            Text="{Binding ViewModel.Email, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,0,20"
+                            FontSize="14"
+                            Padding="15,12">
+                    <ui:TextBox.Background>
+                        <SolidColorBrush Color="#20FFFFFF"/>
+                    </ui:TextBox.Background>
+                    <ui:TextBox.Effect>
+                        <DropShadowEffect Color="Gold" BlurRadius="5" ShadowDepth="1" Opacity="0.2"/>
+                    </ui:TextBox.Effect>
+                </ui:TextBox>
+
+                <!-- CTA Button -->
+                <ui:Button HorizontalAlignment="Center" 
+                           Padding="30,15"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Command="{Binding ViewModel.NotifyMeCommand}"
+                           IsEnabled="{Binding ViewModel.IsSubmitting, Converter={StaticResource BoolToVisConverter}}">
+                    <ui:Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FFD700" Offset="0"/>
+                            <GradientStop Color="#FFA500" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ui:Button.Background>
+                    <ui:Button.Foreground>
+                        <SolidColorBrush Color="#1A1A1A"/>
+                    </ui:Button.Foreground>
+                    <ui:Button.Effect>
+                        <DropShadowEffect Color="Gold" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                    </ui:Button.Effect>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:ProgressRing Width="16" Height="16" Margin="0,0,8,0" 
+                                         Visibility="{Binding ViewModel.IsSubmitting, Converter={StaticResource BoolToVisConverter}}"/>
+                        <TextBlock FontWeight="SemiBold">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="Notify Me for the Launch"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ViewModel.IsSubmitting}" Value="True">
+                                            <Setter Property="Text" Value="Subscribing..."/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                </ui:Button>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
