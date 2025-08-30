@@ -54,7 +54,7 @@
   <ItemGroup>
     <Content Include="Services\Tessdata\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>Tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Link>tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <IncludeInClickOnce>true</IncludeInClickOnce>
     </Content>
   </ItemGroup>
