@@ -28,6 +28,23 @@ namespace SnippetMasterWPF.Services
         private void VerifyRuntimeBinaries()
         {
             var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            
+            // Check tessdata
+            var tessdataPath = Path.Combine(baseDir, "tessdata");
+            if (!Directory.Exists(tessdataPath))
+            {
+                System.Diagnostics.Debug.WriteLine($"Missing tessdata directory: {tessdataPath}");
+            }
+            else
+            {
+                var engFile = Path.Combine(tessdataPath, "eng.traineddata");
+                if (!File.Exists(engFile))
+                {
+                    System.Diagnostics.Debug.WriteLine($"Missing eng.traineddata: {engFile}");
+                }
+            }
+            
+            // Check runtime binaries
             var runtimePaths = new[]
             {
                 Path.Combine(baseDir, "runtimes", "win-x64", "native", "leptonica-1.80.0.dll"),
@@ -51,7 +68,8 @@ namespace SnippetMasterWPF.Services
             using (var bitmap = new Bitmap(filePath))
             {
                 processor.Settings.Language = Languages.English;
-                string text = processor.PerformOCR(bitmap, @"tessdata/").ToString();
+                var tessdataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata");
+                string text = processor.PerformOCR(bitmap, tessdataPath).ToString();
 
                 if (String.IsNullOrEmpty(text))
                 {
@@ -75,7 +93,8 @@ namespace SnippetMasterWPF.Services
                 using (var processor = new OCRProcessor())
                 {
                     processor.Settings.Language = Languages.English;
-                    string ocrText = processor.PerformOCR(bitmap, @"tessdata/").ToString();
+                    var tessdataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata");
+                    string ocrText = processor.PerformOCR(bitmap, tessdataPath).ToString();
 
                     if (String.IsNullOrEmpty(ocrText))
                     {

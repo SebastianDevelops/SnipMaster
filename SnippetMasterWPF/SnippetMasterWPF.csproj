@@ -9,6 +9,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Company>Sebastian Van Rooyen</Company>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
@@ -67,7 +68,7 @@
     </Content>
   </ItemGroup>
 
-  <!-- Copy Tesseract binaries to runtime-specific locations -->
+  <!-- Copy Tesseract binaries to exact runtime structure required -->
   <ItemGroup>
     <Content Include="Tesseractbinaries\Windows\win-x64\*.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -77,30 +78,6 @@
     <Content Include="Tesseractbinaries\Windows\win-x86\*.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Link>runtimes\win-x86\native\%(Filename)%(Extension)</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
-  </ItemGroup>
-  
-  <!-- Explicit ClickOnce deployment for Tesseract binaries -->
-  <ItemGroup Condition="'$(PublishProtocol)' == 'ClickOnce'">
-    <Content Include="Tesseractbinaries\Windows\win-x64\leptonica-1.80.0.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>runtimes\win-x64\native\leptonica-1.80.0.dll</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
-    <Content Include="Tesseractbinaries\Windows\win-x64\libSyncfusionTesseract.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>runtimes\win-x64\native\libSyncfusionTesseract.dll</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
-    <Content Include="Tesseractbinaries\Windows\win-x86\leptonica-1.80.0.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>runtimes\win-x86\native\leptonica-1.80.0.dll</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
-    <Content Include="Tesseractbinaries\Windows\win-x86\libSyncfusionTesseract.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>runtimes\win-x86\native\libSyncfusionTesseract.dll</Link>
       <IncludeInClickOnce>true</IncludeInClickOnce>
     </Content>
   </ItemGroup>
