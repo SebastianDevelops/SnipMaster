@@ -81,6 +81,30 @@
     </Content>
   </ItemGroup>
   
+  <!-- Explicit ClickOnce deployment for Tesseract binaries -->
+  <ItemGroup Condition="'$(PublishProtocol)' == 'ClickOnce'">
+    <Content Include="Tesseractbinaries\Windows\win-x64\leptonica-1.80.0.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>runtimes\win-x64\native\leptonica-1.80.0.dll</Link>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
+    <Content Include="Tesseractbinaries\Windows\win-x64\libSyncfusionTesseract.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>runtimes\win-x64\native\libSyncfusionTesseract.dll</Link>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
+    <Content Include="Tesseractbinaries\Windows\win-x86\leptonica-1.80.0.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>runtimes\win-x86\native\leptonica-1.80.0.dll</Link>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
+    <Content Include="Tesseractbinaries\Windows\win-x86\libSyncfusionTesseract.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>runtimes\win-x86\native\libSyncfusionTesseract.dll</Link>
+      <IncludeInClickOnce>true</IncludeInClickOnce>
+    </Content>
+  </ItemGroup>
+  
   <ItemGroup>
     <Resource Include="Assets\wpfui-icon-256.png" />
     <Resource Include="Assets\wpfui-icon-1024.png" />

@@ -20,6 +20,29 @@ namespace SnippetMasterWPF.Services
             {
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(licenseKey);
             }
+            
+            // Verify runtime binaries exist for ClickOnce
+            VerifyRuntimeBinaries();
+        }
+        
+        private void VerifyRuntimeBinaries()
+        {
+            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            var runtimePaths = new[]
+            {
+                Path.Combine(baseDir, "runtimes", "win-x64", "native", "leptonica-1.80.0.dll"),
+                Path.Combine(baseDir, "runtimes", "win-x64", "native", "libSyncfusionTesseract.dll"),
+                Path.Combine(baseDir, "runtimes", "win-x86", "native", "leptonica-1.80.0.dll"),
+                Path.Combine(baseDir, "runtimes", "win-x86", "native", "libSyncfusionTesseract.dll")
+            };
+            
+            foreach (var path in runtimePaths)
+            {
+                if (!File.Exists(path))
+                {
+                    System.Diagnostics.Debug.WriteLine($"Missing runtime binary: {path}");
+                }
+            }
         }
         
         public string ReadFromUploadedFile(string filePath)
