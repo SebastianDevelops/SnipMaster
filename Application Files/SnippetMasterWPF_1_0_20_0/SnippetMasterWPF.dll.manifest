@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="SnippetMasterWPF.exe" version="1.0.19.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="SnippetMasterWPF.exe" version="1.0.20.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="snippet-master-icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
@@ -2625,7 +2625,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>VzPArF+Ge7o9zHF15iRgQFnRmTyIeTiy7BHrv/r2t9I=</dsig:DigestValue>
+      <dsig:DigestValue>Mxr0c0L571vVJAhX0APQAisj/YpGDhC8/Fc32J8YO60=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SnipMaster.Conversion.dll" size="50688">
@@ -2634,7 +2634,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>Oh9N3YQKCn8iPmUMvUUPThK/cHEfyVU77JnQKr4XTwM=</dsig:DigestValue>
+      <dsig:DigestValue>rzEX/qxkvt2rUAKR2lSJ9kZGFtKCHB8pPe2zotyQYAY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SnipMasterLib.dll" size="30720">
@@ -2643,7 +2643,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>Prh5AgIdC28jB1kq5PkX5YgD0dQnTuaYv1oPjaf5SFg=</dsig:DigestValue>
+      <dsig:DigestValue>Pp9i2Wn74fWjz46ShIiFq65N/DSX1QCc3YLF9xnTjoo=</dsig:DigestValue>
     </hash>
   </file>
   <file name="snippet-master-icon.ico" size="51181">
@@ -2670,7 +2670,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>wxhcJ6l1oSjAGT5Ip5PPp0bfoo7AsVtju40AOwKCegY=</dsig:DigestValue>
+      <dsig:DigestValue>b7i+na9iWjvkfxlxHs/FKtTyOyHBOL1sEd9V4bstBmU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SnippetMasterWPF.exe" size="201216">
@@ -2679,7 +2679,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>5gGuo0Jtz5ERVY4JphAj855RQ3ZH0/LPI2k9IuFq1Bc=</dsig:DigestValue>
+      <dsig:DigestValue>+WrQNgmkWl3tOrwlTZrSBQl+ll4R/lIGZO/dVuSvVXk=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SnippetMasterWPF.runtimeconfig.json" size="584">
