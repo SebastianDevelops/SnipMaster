@@ -17,6 +17,18 @@
     <Content Update="Assets\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="Assets\ocr\det\det.onnx" />
+    <Content Include="Assets\ocr\det\det.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\ocr\rec\dict.txt" />
+    <Content Include="Assets\ocr\rec\dict.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\ocr\rec\rec.onnx" />
+    <Content Include="Assets\ocr\rec\rec.onnx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +44,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.23.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.11.0.20250507" />
     <PackageReference Include="Syncfusion.Licensing" Version="30.2.7" />
     <PackageReference Include="Syncfusion.Pdf.OCR.Wpf" Version="30.2.7" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
@@ -88,6 +102,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\ocr\det\" />
+    <Folder Include="Assets\ocr\rec\" />
     <Folder Include="ffmpeg\" />
     <Folder Include="images\" />
     <Folder Include="Tessdata\" />

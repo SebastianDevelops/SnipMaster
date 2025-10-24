@@ -46,7 +46,7 @@ namespace SnippetMasterWPF
                 // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
                 services.AddSingleton<IHotKeyService, HotKeyService>();
-                services.AddTransient<ITesseractService, TesseractService>();
+                services.AddTransient<IOcrService, OcrService>();
                 services.AddTransient<ISnippingService, SnippingService>();
                 services.AddSingleton<IScreenshotGeneratorService, ScreenshotGeneratorService>();
                 services.AddHttpClient();

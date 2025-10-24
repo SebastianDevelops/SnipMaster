@@ -21,7 +21,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 {
     public partial class DashboardViewModel : ObservableObject
     {
-		private readonly ITesseractService _tesseractService;
+		private readonly IOcrService _ocrService;
 		private readonly ISnippingService _snippingService;
         private readonly IHotKeyService _hotKeyService;
         private readonly IContentDialogService _contentDialogService;
@@ -67,7 +67,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
 
 
 
-        public DashboardViewModel(ITesseractService tesseractService, 
+        public DashboardViewModel(IOcrService ocrService, 
                                   ISnippingService snippingService,
                                   IHotKeyService hotKeyService,
                                   IContentDialogService contentDialogService,
@@ -75,7 +75,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
                                   INotificationService notificationService,
                                   IScreenshotGeneratorService screenshotService)
         {
-			_tesseractService = tesseractService ?? throw new NullReferenceException();
+			_ocrService = ocrService ?? throw new NullReferenceException();
             _snippingService = snippingService ?? throw new NullReferenceException();
             _hotKeyService = hotKeyService ?? throw new NullReferenceException();
             _contentDialogService = contentDialogService ?? throw new NullReferenceException();
@@ -151,7 +151,7 @@ namespace SnippetMasterWPF.ViewModels.Pages
                 {
                     string fileName = open.FileName;
 
-                    string fileText = _tesseractService.ReadFromUploadedFile(fileName);
+                    string fileText = _ocrService.ReadFromUploadedFile(fileName);
 
                     if (!string.IsNullOrEmpty(fileText))
                         SnippetText = fileText;
@@ -229,7 +229,10 @@ namespace SnippetMasterWPF.ViewModels.Pages
                     return;
                 }
 
-                string snippetText = _tesseractService.ReadFromSnippedImage(snippedImage);
+                // Show processing notification
+                _notificationService.ShowInfo("Processing", "Running OCR on snipped image...");
+                
+                string snippetText = _ocrService.ReadFromSnippedImage(snippedImage);
 
                 if (!string.IsNullOrEmpty(snippetText))
                 {
@@ -248,14 +251,20 @@ namespace SnippetMasterWPF.ViewModels.Pages
                     // Process text via API and update editor
                     _ = ProcessAndUpdateEditorAsync(snippetText);
                 }
+                else
+                {
+                    _notificationService.ShowWarning("OCR Result", "No text was detected in the image.");
+                    SnippetText = "[No text detected]"; // Set something to show OCR ran
+                }
             }
 			catch (Exception ex)
 			{
-                MessageBox.Show($@"Something went wrong while reading file: {Environment.NewLine}{ex.Message}"
-                                                 , "Error");
+                MessageBox.Show($@"Something went wrong while reading image: {Environment.NewLine}{ex.Message}", "Error");
+                _notificationService.ShowError("OCR Error", $"Failed to process image: {ex.Message}");
             }
            
         }
+
 		
         private async Task InitializeEditorAsync()
         {
