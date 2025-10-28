@@ -47,9 +47,6 @@
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.23.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.11.0.20250507" />
-    <PackageReference Include="Syncfusion.Licensing" Version="30.2.7" />
-    <PackageReference Include="Syncfusion.Pdf.OCR.Wpf" Version="30.2.7" />
-    <PackageReference Include="Tesseract" Version="5.2.0" />
     <PackageReference Include="WPF-UI" Version="3.0.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0 " />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2 " />
@@ -60,40 +57,7 @@
   <ItemGroup>
     <None Remove="Assets\wpfui-icon-256.png" />
     <None Remove="Assets\wpfui-icon-1024.png" />
-    <None Remove="Services\Tessdata\eng.traineddata" />
-    <None Remove="Services\Tessdata\pdf.ttf" />
     <None Remove="snippet-master-icon.ico" />
-    <None Include="Services\Tessdata\eng.traineddata" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="Services\Tessdata\**\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>tessdata\%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Tesseractbinaries\**\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>Tesseractbinaries\%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
-  </ItemGroup>
-
-  <!-- Copy Tesseract binaries to exact runtime structure required -->
-  <ItemGroup>
-    <Content Include="Tesseractbinaries\Windows\win-x64\*.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>runtimes\win-x64\native\%(Filename)%(Extension)</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
-    <Content Include="Tesseractbinaries\Windows\win-x86\*.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>runtimes\win-x86\native\%(Filename)%(Extension)</Link>
-      <IncludeInClickOnce>true</IncludeInClickOnce>
-    </Content>
   </ItemGroup>
   
   <ItemGroup>
@@ -106,9 +70,6 @@
     <Folder Include="Assets\ocr\rec\" />
     <Folder Include="ffmpeg\" />
     <Folder Include="images\" />
-    <Folder Include="Tessdata\" />
-    <Folder Include="Tesseractbinaries\Windows\win-x64\" />
-    <Folder Include="Tesseractbinaries\Windows\win-x86\" />
   </ItemGroup>
 
   <ItemGroup>
