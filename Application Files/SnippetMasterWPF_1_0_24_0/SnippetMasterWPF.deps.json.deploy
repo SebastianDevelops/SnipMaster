@@ -19,6 +19,7 @@
           "Microsoft.ML.OnnxRuntime": "1.23.1",
           "Microsoft.Web.WebView2": "1.0.3405.78",
           "OpenCvSharp4.Windows": "4.11.0.20250507",
+          "OpenCvSharp4.runtime.win": "4.11.0.20250507",
           "SnipMaster.Compression": "1.0.0",
           "SnipMaster.Conversion": "1.0.0",
           "SnipMasterLib": "1.0.0",
